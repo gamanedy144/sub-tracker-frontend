@@ -5,6 +5,8 @@ export interface Subscription {
   subscriptionProvider: SubscriptionProvider;
   subscriptionName: string;
   duration: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
+  nextOccurrenceDate: Date | string;
+  lastOccurrenceDate: Date | string;
 }
