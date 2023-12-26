@@ -8,22 +8,12 @@ import {
   VStack,
   Heading,
 } from '@chakra-ui/react';
+import { formatDate, manageDate } from '../utils/dateFormatting';
 
 interface Props {
   subscription: Subscription;
 }
 const SubCard = ({ subscription }: Props) => {
-  function manageDate(date: Date | string): Date {
-    return typeof date === 'string' ? new Date(date) : date;
-  }
-  function formatDate(date: Date) {
-    return date.toLocaleDateString('ro-RO', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-  }
-
   const lastOccurrenceDate = subscription.lastOccurrenceDate
     ? manageDate(subscription.lastOccurrenceDate)
     : manageDate(subscription.startDate);

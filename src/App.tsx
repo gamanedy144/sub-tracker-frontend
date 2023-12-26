@@ -4,67 +4,45 @@ import {
   GridItem,
   useDisclosure,
   useBreakpointValue,
-  HStack,
 } from '@chakra-ui/react';
 
 import NavBar from './components/NavBar';
 import SubGrid from './components/SubGrid';
 import SideBar from './components/SideBar';
-import { Route, Routes } from 'react-router-dom';
-
-function Insight() {
-  return <Box p={4}>Insight Content</Box>;
-}
-
-function Report() {
-  return <Box p={4}>Report Content</Box>;
-}
-function Settings() {
-  return <Box p={4}>Settings Content</Box>;
-}
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import MainContent from './components/MainContent';
 function App() {
-  const { isOpen, onToggle } = useDisclosure();
+  const shouldShowSidebar = useBreakpointValue({ base: false, lg: true });
+  const [expanded, setExpanded] = useState(shouldShowSidebar);
 
-  const shouldShowSidebar = useBreakpointValue({ base: isOpen, lg: true });
-
+  const handleToggleSidebar = (newExpanded: boolean) => {
+    setExpanded(newExpanded);
+  };
+  const location = useLocation();
+  const routeTitle = location.pathname.substring(1);
   return (
     <>
       <Grid
-        templateAreas={{
-          base: `"nav" "main"`,
-          lg: `"nav nav" "aside main"`,
-        }}
+        templateAreas={` "aside main"`}
         templateColumns={{
-          base: '1fr',
-          lg: '1fr 3fr',
-        }}
-        templateRows={{
-          base: 'auto 1fr', // Auto for NavBar, 1fr for the rest
-          lg: 'auto 1fr', // Auto for NavBar on large screens
+          sm: 'auto 1fr',
+          lg: expanded ? '250px 1fr' : 'auto 1fr',
         }}
         paddingX={10}
         paddingY={5}
         gap={5}
         height="100vh"
       >
-        <GridItem area="nav" bg="coral">
-          <NavBar onToggle={onToggle} isOpen={isOpen} />
+        <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
+          <SideBar
+            shouldShowSidebar={shouldShowSidebar}
+            onToggleSidebar={handleToggleSidebar}
+          />
         </GridItem>
-        {shouldShowSidebar && (
-          <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
-            <SideBar />
-          </GridItem>
-        )}
 
         <GridItem area="main" bg="dodgerblue">
-          <Box p={4} height="100%" overflowY="auto">
-            <Routes>
-              <Route path="/" element={<SubGrid />} />
-              <Route path="/insight" element={<Insight />} />
-              <Route path="/report" element={<Report />} />
-              <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </Box>
+          <MainContent routeTitle={routeTitle} />
         </GridItem>
       </Grid>
     </>

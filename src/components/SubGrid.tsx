@@ -12,7 +12,7 @@ const SubGrid = () => {
         <div>{subscriptionProvider.name}</div>
       ))}
       <Grid
-        templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}
+        templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }}
         paddingX={5}
         paddingY={5}
         gap={5}
