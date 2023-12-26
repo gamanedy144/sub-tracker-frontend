@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Divider, Heading } from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
 
 // Import your custom components for different routes
@@ -27,6 +27,8 @@ const MainContent: FC<MainContentProps> = ({ routeTitle }) => {
       <Heading mb={4}>
         {routeTitle ? capitalizeFirstLetter(routeTitle) : 'Home'}
       </Heading>
+      <Divider my={2} />
+
       <Routes>
         <Route path="/" element={<SubGrid />} />
         <Route path="/insight" element={<Insight />} />

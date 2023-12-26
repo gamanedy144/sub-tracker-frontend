@@ -1,15 +1,6 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-  useDisclosure,
-  useBreakpointValue,
-} from '@chakra-ui/react';
-
-import NavBar from './components/NavBar';
-import SubGrid from './components/SubGrid';
+import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import SideBar from './components/SideBar';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import MainContent from './components/MainContent';
 function App() {

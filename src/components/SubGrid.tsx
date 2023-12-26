@@ -1,18 +1,23 @@
 import SubCard from './SubCard';
 import { Grid } from '@chakra-ui/react';
 import useSubscriptions from '../hooks/useSubscriptions';
-import useSubscriptionProviders from '../hooks/useSubscriptionProviders';
+
+import UpdateSubCard from './UpdateSubCard';
+import { useState } from 'react';
 
 const SubGrid = () => {
   const { data: subscriptions } = useSubscriptions();
-  const { data: subscriptionProviders } = useSubscriptionProviders();
+
+  const [isAdding, setIsAdding] = useState(false);
+
+  const onClickHandle = () => {
+    setIsAdding(!isAdding);
+  };
   return (
     <>
-      {subscriptionProviders.map((subscriptionProvider) => (
-        <div>{subscriptionProvider.name}</div>
-      ))}
       <Grid
         templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }}
+        templateRows="1fr"
         paddingX={5}
         paddingY={5}
         gap={5}
@@ -20,6 +25,7 @@ const SubGrid = () => {
         {subscriptions.map((subscription) => (
           <SubCard subscription={subscription} key={subscription.id} />
         ))}
+        <UpdateSubCard clicked={isAdding} onClickHandle={onClickHandle} />)
       </Grid>
     </>
   );

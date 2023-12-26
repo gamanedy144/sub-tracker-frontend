@@ -1,8 +1,14 @@
 import { FC, useEffect, useState } from 'react';
-import { VStack, Text, HStack, IconButton, Box, Image } from '@chakra-ui/react';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  VStack,
+  HStack,
+  IconButton,
+  Box,
+  Image,
+  Divider,
+  Text,
+} from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import ColorModeSwitch from './ColorModeSwitch';
 import NavLink from './NavLink';
 interface SideBarProps {
   shouldShowSidebar: boolean;
@@ -39,7 +45,9 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
           display={expanded ? 'flex' : 'none'}
           css={{ overflow: 'hidden' }}
         >
-          Sub Tracker
+          <Text fontSize={24} fontWeight={'bold'}>
+            Sub Tracker
+          </Text>
         </Box>
         <IconButton
           icon={expanded ? <CloseIcon /> : <HamburgerIcon />}
@@ -68,6 +76,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         <NavLink to="/report" showText={expanded} iconName="report">
           Report
         </NavLink>
+        <Divider my={4} />
         <NavLink to="/settings" showText={expanded} iconName="settings">
           Settings
         </NavLink>
