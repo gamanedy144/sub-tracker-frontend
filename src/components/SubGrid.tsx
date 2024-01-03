@@ -25,7 +25,7 @@ const SubGrid = () => {
         {subscriptions.map((subscription) => (
           <SubCard subscription={subscription} key={subscription.id} />
         ))}
-        <UpdateSubCard clicked={isAdding} onClickHandle={onClickHandle} />)
+        <UpdateSubCard clicked={isAdding} onClickHandle={onClickHandle} />
       </Grid>
     </>
   );

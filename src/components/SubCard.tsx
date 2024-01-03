@@ -34,6 +34,10 @@ const SubCard = ({ subscription }: Props) => {
             <Heading>{subscription.subscriptionName}</Heading>
           </CardHeader>
           <CardBody>
+            <VStack align={'start'} gap={2} mb={2}>
+              <div>Provider: {subscription.provider.name}</div>
+              <div>Details: {subscription.provider.details}</div>
+            </VStack>
             <HStack justifyContent={'space-between'}>
               <VStack align={'start'} spacing={2}>
                 <span>Last Occurrence Date:</span>{' '}
