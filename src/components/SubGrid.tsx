@@ -3,16 +3,19 @@ import { Grid } from '@chakra-ui/react';
 import useSubscriptions from '../hooks/useSubscriptions';
 
 import UpdateSubCard from './UpdateSubCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SubGrid = () => {
-  const { data: subscriptions } = useSubscriptions();
+  const { data: subscriptions, refetch } = useSubscriptions();
 
   const [isAdding, setIsAdding] = useState(false);
 
   const onClickHandle = () => {
     setIsAdding(!isAdding);
   };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <>
       <Grid

@@ -22,10 +22,12 @@ import {
 import { FC, FormEvent, useEffect, useState } from 'react';
 import useSubscriptionProviders from '../hooks/useSubscriptionProviders';
 import {
-  SubscriptionTypeEnum,
+  mapToBackendValue,
+  mapToDisplayText,
   subscriptionTypes,
 } from '../utils/subscriptionTypeEnum';
 import { subscriptionSchema } from '../models/Subscription';
+import { postSubscription } from '../services/SubscriptionService';
 
 interface UpdateSubCardProps {
   clicked: boolean;
@@ -39,7 +41,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     subscriptionProviders.data.find(
       (provider) => provider.name === subscriptionProviders.data[0]?.name
     ) || null;
-
+  const initialType = mapToBackendValue(subscriptionTypes[0]) || '';
   useEffect(() => {
     // Check if data is available before setting the initial provider
     if (subscriptionProviders.data.length > 0) {
@@ -50,9 +52,9 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     setLoadingProviders(false);
   }, [subscriptionProviders.data]);
   const [initialFormData, setInitialFormData] = useState({
-    title: '',
+    subscriptionName: '',
     provider: initialProvider,
-    type: subscriptionTypes[0] || '',
+    type: initialType,
     startDate: '',
     endDate: '',
   });
@@ -60,16 +62,23 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   const [formData, setFormData] = useState({ ...initialFormData });
 
   const handleFormSubmit = (event: FormEvent) => {
+    const parsedFormData = {
+      ...formData,
+      provider: formData.provider,
+      type: mapToBackendValue(formData.type),
+    };
     console.log(formData);
+    console.log(parsedFormData);
     event.preventDefault();
     try {
       // Validate form data against the schema
-      subscriptionSchema.parse(formData);
+      subscriptionSchema.parse(parsedFormData);
       // Log the subscription object if there are no changes
-      if (JSON.stringify(initialFormData) === JSON.stringify(formData)) {
+      if (JSON.stringify(initialFormData) === JSON.stringify(parsedFormData)) {
         console.log('Form data not changed:', initialFormData);
       }
-      console.log('Form data submitted:', formData);
+      console.log('Form data submitted:', parsedFormData);
+      postSubscription(parsedFormData);
       resetInputs();
     } catch (error) {
       // Handle validation error (e.g., display error messages)
@@ -79,9 +88,9 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
 
   const resetInputs = () => {
     setFormData({
-      title: '',
+      subscriptionName: '',
       provider: subscriptionProviders.data[0],
-      type: '',
+      type: initialType,
       startDate: '',
       endDate: '',
     });
@@ -116,16 +125,19 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
           </Card>
         ) : (
           <Card textAlign={'center'} height="100%">
-            <form onSubmit={handleFormSubmit}>
+            <form>
               <CardHeader>
                 <Heading>
                   <FormControl>
                     <Input
                       type="text"
-                      value={formData.title}
+                      value={formData.subscriptionName}
                       // ref={titleRef}
                       onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
+                        setFormData({
+                          ...formData,
+                          subscriptionName: e.target.value,
+                        })
                       }
                       placeholder="Title"
                     />
@@ -165,13 +177,13 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            type: e.target.value as SubscriptionTypeEnum,
+                            type: mapToBackendValue(e.target.value),
                           })
                         }
                       >
                         {subscriptionTypes.map((option) => (
                           <option key={option} value={option}>
-                            {option}
+                            {mapToDisplayText(option)}
                           </option>
                         ))}
                       </Select>
@@ -207,19 +219,17 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                   </HStack>
 
                   <HStack>
-                    <button type="submit">
-                      <Icon
-                        as={FontAwesomeIcon}
-                        icon={faCheckCircle}
-                        boxSize={12}
-                        color={'green.500'}
-                        _hover={{
-                          color: 'green.300',
-                          cursor: 'pointer', // Add this line to show that the icon is clickable
-                        }}
-                        onClick={handleFormSubmit}
-                      />
-                    </button>
+                    <Icon
+                      as={FontAwesomeIcon}
+                      icon={faCheckCircle}
+                      boxSize={12}
+                      color={'green.500'}
+                      _hover={{
+                        color: 'green.300',
+                        cursor: 'pointer', // Add this line to show that the icon is clickable
+                      }}
+                      onClick={handleFormSubmit}
+                    />
                     <Icon
                       as={FontAwesomeIcon}
                       icon={faXmarkCircle}

@@ -7,7 +7,7 @@ const useData = <T>(endpoint: string) => {
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchData = async () => {
     const controller = new AbortController();
 
     setLoading(true);
@@ -22,10 +22,16 @@ const useData = <T>(endpoint: string) => {
         setError(err.message);
         setLoading(false);
       });
-
     return () => controller.abort();
+  };
+  useEffect(() => {
+    fetchData();
   }, []);
-  return { data, error, isLoading };
+
+  const refetch = async () => {
+    await fetchData(); // Manually trigger a new fetch
+  };
+  return { data, error, isLoading, refetch };
 };
 
 export default useData;

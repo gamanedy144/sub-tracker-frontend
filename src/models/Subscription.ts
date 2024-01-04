@@ -23,9 +23,9 @@ export interface Subscription {
 export type SubscriptionType = z.infer<typeof subscriptionSchema>;
 
 export const subscriptionSchema = z.object({
-  title: z.string().min(3),
+  subscriptionName: z.string().min(3),
   provider: subscriptionProviderSchema,
-  type: z.enum(subscriptionTypes),
-  startDate: z.string(),
+  type: z.string(),
+  startDate: z.string().min(1),
   endDate: z.string(),
 });

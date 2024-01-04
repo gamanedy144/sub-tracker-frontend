@@ -14,3 +14,25 @@ export const subscriptionTypes: [string, string, string, string, string] = [
   SubscriptionTypeEnum.YEARLY,
   SubscriptionTypeEnum.WEEKLY,
 ];
+const mapToDisplayText = (value: string): string => {
+  switch (value) {
+    case SubscriptionTypeEnum.DAILY:
+      return 'daily';
+    case SubscriptionTypeEnum.MONTHLY:
+      return 'monthly';
+    case SubscriptionTypeEnum.BIMONTHLY:
+      return 'bi-monthly';
+    case SubscriptionTypeEnum.YEARLY:
+      return 'yearly';
+    case SubscriptionTypeEnum.WEEKLY:
+      return 'weekly';
+    default:
+      return '';
+  }
+};
+
+// Mapping function for backend submission
+const mapToBackendValue = (displayText: string): string => {
+  return displayText.toUpperCase();
+};
+export { mapToDisplayText, mapToBackendValue };
