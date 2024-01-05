@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import apiClient from '../services/api-client';
 import { CanceledError } from 'axios';
 
@@ -7,7 +7,7 @@ const useData = <T>(endpoint: string) => {
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const controller = new AbortController();
 
     setLoading(true);
@@ -23,14 +23,16 @@ const useData = <T>(endpoint: string) => {
         setLoading(false);
       });
     return () => controller.abort();
-  };
+  }, [endpoint]);
   useEffect(() => {
+    console.log('Fetching data...');
     fetchData();
-  }, []);
+    return () => console.log('Cleanup...');
+  }, [fetchData]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchData(); // Manually trigger a new fetch
-  };
+  }, [fetchData]);
   return { data, error, isLoading, refetch };
 };
 

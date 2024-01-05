@@ -26,8 +26,9 @@ import {
   mapToDisplayText,
   subscriptionTypes,
 } from '../utils/subscriptionTypeEnum';
-import { subscriptionSchema } from '../models/Subscription';
+import { Subscription, subscriptionSchema } from '../models/Subscription';
 import { postSubscription } from '../services/SubscriptionService';
+import useData from '../hooks/useData';
 
 interface UpdateSubCardProps {
   clicked: boolean;
@@ -36,6 +37,7 @@ interface UpdateSubCardProps {
 const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   const subscriptionProviders = useSubscriptionProviders();
 
+  const { refetch } = useData<Subscription>('/subscription');
   const [loadingProviders, setLoadingProviders] = useState(true);
   const initialProvider =
     subscriptionProviders.data.find(
@@ -69,11 +71,9 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     };
     console.log(formData);
     console.log(parsedFormData);
-    event.preventDefault();
+    // event.preventDefault();
     try {
-      // Validate form data against the schema
       subscriptionSchema.parse(parsedFormData);
-      // Log the subscription object if there are no changes
       if (JSON.stringify(initialFormData) === JSON.stringify(parsedFormData)) {
         console.log('Form data not changed:', initialFormData);
       }
@@ -81,7 +81,6 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       postSubscription(parsedFormData);
       resetInputs();
     } catch (error) {
-      // Handle validation error (e.g., display error messages)
       console.error('Form data is invalid:', error.errors);
     }
   };
@@ -125,7 +124,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
           </Card>
         ) : (
           <Card textAlign={'center'} height="100%">
-            <form>
+            <form onSubmit={handleFormSubmit}>
               <CardHeader>
                 <Heading>
                   <FormControl>
@@ -219,17 +218,18 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                   </HStack>
 
                   <HStack>
-                    <Icon
-                      as={FontAwesomeIcon}
-                      icon={faCheckCircle}
-                      boxSize={12}
-                      color={'green.500'}
-                      _hover={{
-                        color: 'green.300',
-                        cursor: 'pointer', // Add this line to show that the icon is clickable
-                      }}
-                      onClick={handleFormSubmit}
-                    />
+                    <button type="submit">
+                      <Icon
+                        as={FontAwesomeIcon}
+                        icon={faCheckCircle}
+                        boxSize={12}
+                        color={'green.500'}
+                        _hover={{
+                          color: 'green.300',
+                          cursor: 'pointer', // Add this line to show that the icon is clickable
+                        }}
+                      />
+                    </button>
                     <Icon
                       as={FontAwesomeIcon}
                       icon={faXmarkCircle}
