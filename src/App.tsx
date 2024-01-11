@@ -1,8 +1,18 @@
 import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import SideBar from './components/SideBar';
-import { useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { useState } from 'react';
-import MainContent from './components/MainContent';
+import Authentication from './components/Authentication';
+import MainComponent from './components/MainComponent';
+import RequireAuth from 'react-auth-kit';
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 function App() {
   const shouldShowSidebar = useBreakpointValue({ base: false, lg: true });
   const [expanded, setExpanded] = useState(shouldShowSidebar);
@@ -10,33 +20,36 @@ function App() {
   const handleToggleSidebar = (newExpanded: boolean) => {
     setExpanded(newExpanded);
   };
-  const location = useLocation();
-  const routeTitle = location.pathname.substring(1);
-  return (
-    <>
-      <Grid
-        templateAreas={` "aside main"`}
-        templateColumns={{
-          sm: 'auto 1fr',
-          lg: expanded ? '250px 1fr' : 'auto 1fr',
-        }}
-        paddingX={10}
-        paddingY={5}
-        gap={5}
-        height="100vh"
-      >
-        <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
-          <SideBar
-            shouldShowSidebar={shouldShowSidebar}
-            onToggleSidebar={handleToggleSidebar}
-          />
-        </GridItem>
+  const isLoggedIn = false;
 
-        <GridItem area="main" bg="dodgerblue">
-          <MainContent routeTitle={routeTitle} />
-        </GridItem>
-      </Grid>
-    </>
+  return (
+    <Routes>
+      <Route path={'/auth/*'} element={<Authentication />} />
+      {/* <Route
+        path={'/home'}
+        element={
+          <RequireAuth fallbackPath={'/login'}>
+            <MainComponent
+              shouldShowSidebar={shouldShowSidebar}
+              expanded={expanded}
+              onToggleSidebar={handleToggleSidebar}
+            />
+          </RequireAuth>
+        }
+      /> */}
+      <Route element={<AuthOutlet fallbackPath="/login" />}>
+        <Route
+          path={'/*'}
+          element={
+            <MainComponent
+              shouldShowSidebar={shouldShowSidebar}
+              expanded={expanded}
+              onToggleSidebar={handleToggleSidebar}
+            />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 

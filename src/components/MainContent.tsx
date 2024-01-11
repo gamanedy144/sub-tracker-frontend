@@ -30,7 +30,7 @@ const MainContent: FC<MainContentProps> = ({ routeTitle }) => {
       <Divider my={2} />
 
       <Routes>
-        <Route path="/" element={<SubGrid />} />
+        <Route path="/home" element={<SubGrid />} />
         <Route path="/insight" element={<Insight />} />
         <Route path="/report" element={<Report />} />
         <Route path="/settings" element={<Settings />} />

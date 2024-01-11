@@ -2,14 +2,14 @@ import { object } from 'zod';
 import useData from '../hooks/useData';
 import { Subscription } from '../models/Subscription';
 import axios from 'axios';
-import apiClient from './api-client';
+import { apiService } from './api-client';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const fetchSubscriptions = () => useData<Subscription>('/subscription');
 
 const postSubscription = async (subscription: Subscription | any) => {
   try {
-    const response = await apiClient.post('/subscription', {
+    const response = await apiService.post('/subscription', {
       ...subscription,
       user: { id: 1 },
     });

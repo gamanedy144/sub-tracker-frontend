@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-import apiClient from '../services/api-client';
+import { apiService } from '../services/api-client';
 import { CanceledError } from 'axios';
-
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 const useData = <T>(endpoint: string) => {
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
-
+  const authHeader = useAuthHeader();
   const fetchData = useCallback(async () => {
     const controller = new AbortController();
 
     setLoading(true);
-    apiClient
-      .get<T[]>(endpoint, { signal: controller.signal })
+    apiService
+      .get<T[]>(endpoint, {
+        signal: controller.signal,
+        headers: { Authorization: authHeader },
+      })
       .then((res) => {
         setData(res.data);
         setLoading(false);

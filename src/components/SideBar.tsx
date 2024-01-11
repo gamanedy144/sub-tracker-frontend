@@ -67,7 +67,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         css={{ overflow: 'hidden' }}
         gap={4}
       >
-        <NavLink to="/" showText={expanded} iconName="home">
+        <NavLink to="/home" showText={expanded} iconName="home">
           Home
         </NavLink>
         <NavLink to="/insight" showText={expanded} iconName="insight">
@@ -88,7 +88,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         alignItems="center"
         marginTop={'auto'}
       >
-        <Image boxSize="32px" borderRadius={8} src="public/default.jpg"></Image>
+        <Image boxSize="32px" borderRadius={8} src="/default.jpg"></Image>
         <Box
           overflow={'hidden'}
           transition={'width 0.3s'}

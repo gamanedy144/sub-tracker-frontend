@@ -69,9 +69,6 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       provider: formData.provider,
       type: mapToBackendValue(formData.type),
     };
-    console.log(formData);
-    console.log(parsedFormData);
-    // event.preventDefault();
     try {
       subscriptionSchema.parse(parsedFormData);
       if (JSON.stringify(initialFormData) === JSON.stringify(parsedFormData)) {
