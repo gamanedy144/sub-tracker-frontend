@@ -22,38 +22,34 @@ import {
 import { FC, FormEvent, useEffect, useState } from 'react';
 import useSubscriptionProviders from '../hooks/useSubscriptionProviders';
 import {
+  SubscriptionTypeEnum,
+  getEnumKeys,
   mapToBackendValue,
   mapToDisplayText,
   subscriptionTypes,
+  subscriptionTypesObjs,
 } from '../utils/subscriptionTypeEnum';
 import { Subscription, subscriptionSchema } from '../models/Subscription';
 import { useSubscriptionService } from '../services/useSubscriptionService';
 import useData from '../hooks/useData';
+import { fromZodError } from 'zod-validation-error';
+import toast from 'react-hot-toast';
 
 interface UpdateSubCardProps {
   clicked: boolean;
   onClickHandle: () => void;
 }
 const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
-  const subscriptionProviders = useSubscriptionProviders();
+  const { data: subscriptionProviders } = useSubscriptionProviders();
 
   const { postSubscription } = useSubscriptionService();
   const { refetch } = useData<Subscription>('/subscription');
   const [loadingProviders, setLoadingProviders] = useState(true);
   const initialProvider =
-    subscriptionProviders.data.find(
-      (provider) => provider.name === subscriptionProviders.data[0]?.name
+    subscriptionProviders.find(
+      (provider) => provider.name === subscriptionProviders[0]?.name
     ) || null;
   const initialType = mapToBackendValue(subscriptionTypes[0]) || '';
-  useEffect(() => {
-    // Check if data is available before setting the initial provider
-    if (subscriptionProviders.data.length > 0) {
-      setFormData({ ...formData, provider: subscriptionProviders.data[0] });
-    }
-
-    // Set loading to false once data is available
-    setLoadingProviders(false);
-  }, [subscriptionProviders.data]);
   const [initialFormData, setInitialFormData] = useState({
     subscriptionName: '',
     provider: initialProvider,
@@ -63,12 +59,18 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   });
 
   const [formData, setFormData] = useState({ ...initialFormData });
+  useEffect(() => {
+    if (subscriptionProviders.length > 0) {
+      setFormData({ ...formData, provider: subscriptionProviders[0] });
+    }
+    setLoadingProviders(false);
+  }, [subscriptionProviders]);
 
   const handleFormSubmit = (event: FormEvent) => {
     const parsedFormData = {
       ...formData,
       provider: formData.provider,
-      type: mapToBackendValue(formData.type),
+      type: formData.type,
     };
     try {
       subscriptionSchema.parse(parsedFormData);
@@ -79,6 +81,9 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       postSubscription(parsedFormData);
       resetInputs();
     } catch (error) {
+      event.preventDefault();
+      const validationError = fromZodError(error);
+      toast.error(`Failed to register: ${validationError}`);
       console.error('Form data is invalid:', error.errors);
     }
   };
@@ -86,7 +91,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   const resetInputs = () => {
     setFormData({
       subscriptionName: '',
-      provider: subscriptionProviders.data[0],
+      provider: subscriptionProviders[0],
       type: initialType,
       startDate: '',
       endDate: '',
@@ -156,11 +161,14 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                         onChange={(e) => {
                           setFormData({
                             ...formData,
-                            provider: e.target.value,
+                            provider:
+                              subscriptionProviders.find(
+                                (provider) => provider.name === e.target.value
+                              ) || null,
                           });
                         }}
                       >
-                        {subscriptionProviders.data.map((option) => (
+                        {subscriptionProviders.map((option) => (
                           <option key={option.id} value={option.name}>
                             {option.name}
                           </option>
@@ -171,16 +179,16 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                       <FormLabel>Type</FormLabel>
                       <Select
                         value={formData.type || ''}
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setFormData({
                             ...formData,
                             type: mapToBackendValue(e.target.value),
-                          })
-                        }
+                          });
+                        }}
                       >
-                        {subscriptionTypes.map((option) => (
-                          <option key={option} value={option}>
-                            {mapToDisplayText(option)}
+                        {subscriptionTypesObjs.map((obj) => (
+                          <option key={obj.label} value={obj.value}>
+                            {obj.label}
                           </option>
                         ))}
                       </Select>

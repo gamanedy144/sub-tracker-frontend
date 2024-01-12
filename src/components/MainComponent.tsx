@@ -3,6 +3,7 @@ import React from 'react';
 import SideBar from './SideBar';
 import MainContent from './MainContent';
 import { useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 interface MainComponentProps {
   shouldShowSidebar: boolean; // Update the type based on your needs
   expanded: boolean;
@@ -28,6 +29,7 @@ const MainComponent: React.FC<MainComponentProps> = ({
       gap={5}
       height="100vh"
     >
+      <Toaster position="top-right" />
       <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
         <SideBar
           shouldShowSidebar={shouldShowSidebar}

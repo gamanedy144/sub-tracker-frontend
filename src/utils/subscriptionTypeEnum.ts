@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export enum SubscriptionTypeEnum {
   DAILY = 'daily',
   MONTHLY = 'monthly',
@@ -7,7 +5,7 @@ export enum SubscriptionTypeEnum {
   YEARLY = 'yearly',
   WEEKLY = 'weekly',
 }
-export const subscriptionTypes: [string, string, string, string, string] = [
+export const subscriptionTypes: SubscriptionTypeEnum[] = [
   SubscriptionTypeEnum.DAILY,
   SubscriptionTypeEnum.MONTHLY,
   SubscriptionTypeEnum.BIMONTHLY,
@@ -36,3 +34,16 @@ const mapToBackendValue = (displayText: string): string => {
   return displayText.toUpperCase();
 };
 export { mapToDisplayText, mapToBackendValue };
+export function getEnumKeys<
+  T extends string,
+  TEnumValue extends string | number
+>(enumVariable: { [key in T]: TEnumValue }) {
+  return Object.keys(enumVariable) as Array<T>;
+}
+
+export const subscriptionTypesObjs = Object.keys(SubscriptionTypeEnum).map(
+  (key) => ({
+    label: key.toLowerCase(),
+    value: mapToBackendValue(key),
+  })
+);
