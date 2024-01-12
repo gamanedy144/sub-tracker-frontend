@@ -27,7 +27,7 @@ import {
   subscriptionTypes,
 } from '../utils/subscriptionTypeEnum';
 import { Subscription, subscriptionSchema } from '../models/Subscription';
-import { postSubscription } from '../services/SubscriptionService';
+import { useSubscriptionService } from '../services/useSubscriptionService';
 import useData from '../hooks/useData';
 
 interface UpdateSubCardProps {
@@ -37,6 +37,7 @@ interface UpdateSubCardProps {
 const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   const subscriptionProviders = useSubscriptionProviders();
 
+  const { postSubscription } = useSubscriptionService();
   const { refetch } = useData<Subscription>('/subscription');
   const [loadingProviders, setLoadingProviders] = useState(true);
   const initialProvider =

@@ -7,24 +7,38 @@ import {
   Image,
   Divider,
   Text,
+  Icon,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import NavLink from './NavLink';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOut } from '@fortawesome/free-solid-svg-icons';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import { useNavigate } from 'react-router-dom';
+
 interface SideBarProps {
   shouldShowSidebar: boolean;
   onToggleSidebar: (expanded: boolean) => void;
 }
 const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
   const [expanded, setExpanded] = useState(shouldShowSidebar);
+  const auth = useAuthUser();
+  const signOut = useSignOut();
+  const navigate = useNavigate();
+
   useEffect(() => {
     setExpanded(shouldShowSidebar);
-  }, [shouldShowSidebar]);
+  }, [shouldShowSidebar, signOut]);
 
   const handleToggleSidebar = () => {
     setExpanded(!expanded);
     onToggleSidebar(!expanded);
   };
-
+  const onSignOut = () => {
+    signOut();
+    navigate('/auth/login');
+  };
   return (
     <VStack
       spacing={4}
@@ -87,6 +101,8 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         width="100%"
         alignItems="center"
         marginTop={'auto'}
+        display="flex"
+        justifyContent="space-between"
       >
         <Image boxSize="32px" borderRadius={8} src="/default.jpg"></Image>
         <Box
@@ -95,8 +111,19 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
           display={expanded ? 'flex' : 'none'}
           css={{ overflow: 'hidden' }}
         >
-          Sub Tracker
+          {auth.fullName}
         </Box>
+        <button onClick={onSignOut}>
+          <Icon
+            as={FontAwesomeIcon}
+            icon={faSignOut}
+            boxSize={4}
+            _hover={{
+              color: 'grey.',
+              cursor: 'pointer', // Add this line to show that the icon is clickable
+            }}
+          />
+        </button>
       </HStack>
 
       {/* Add more links as needed */}

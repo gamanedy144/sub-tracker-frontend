@@ -5,7 +5,7 @@ export const apiService = axios.create({
   withCredentials: true,
 });
 
-export const setAuthHeaders = (token) => {
+export const setAuthHeaders = (token: string) => {
   if (token) {
     apiService.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {

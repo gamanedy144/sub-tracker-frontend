@@ -37,7 +37,7 @@ function App() {
           </RequireAuth>
         }
       /> */}
-      <Route element={<AuthOutlet fallbackPath="/login" />}>
+      <Route element={<AuthOutlet fallbackPath="/auth/login" />}>
         <Route
           path={'/*'}
           element={

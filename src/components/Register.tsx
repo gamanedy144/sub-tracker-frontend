@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { authenticationSchema, registerSchema } from '../models/Account';
-import { authenticate, register } from '../services/AccountService';
+import { useAccountService } from '../services/useAccountService';
 import {
   Box,
   Button,
@@ -19,10 +19,10 @@ import {
   InputRightElement,
   IconButton,
 } from '@chakra-ui/react';
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import toast, { Toaster } from 'react-hot-toast';
+import { fromZodError } from 'zod-validation-error';
 
 const Register = () => {
   const [initialFormData, setInitialFormData] = useState({
@@ -36,20 +36,25 @@ const Register = () => {
   const [formData, setFormData] = useState({ ...initialFormData });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
+  const { register } = useAccountService();
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
   const handleToggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  const handleFormSubmit = (event: FormEvent) => {
+  const handleFormSubmit = async (event: FormEvent) => {
     try {
       event.preventDefault();
       registerSchema.parse(formData);
-      register(formData);
-      navigate('/home');
+      await register(formData);
+      toast.success('Registration successful!');
+      navigate('/auth/login');
     } catch (error) {
+      const validationError = fromZodError(error);
+      toast.error(`Failed to register: ${validationError}`);
       console.error('Invalid user details: ', error.errors);
     }
   };
@@ -66,6 +71,7 @@ const Register = () => {
 
   return (
     <Box width="100%" display="flex" justifyContent="center" marginTop={120}>
+      <Toaster position="top-right" />
       <Card
         textAlign={'center'}
         height="100%"
@@ -214,7 +220,7 @@ const Register = () => {
                 marginTop={5}
               >
                 <Button type="submit" backgroundColor="green.500">
-                  <Text>Login</Text>
+                  <Text>Register</Text>
                 </Button>
                 <Button onClick={resetInputs} backgroundColor="red.400">
                   <Text>Cancel</Text>

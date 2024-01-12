@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { User, authenticationSchema } from '../models/Account';
-import { authenticate, fetchUserDetails } from '../services/AccountService';
+import * as jose from 'jose';
+import AccountService from '../services/useAccountService';
 import {
   Box,
   Button,
@@ -21,6 +22,7 @@ import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { useAccountService } from '../services/useAccountService';
 const Login = () => {
   const navigate = useNavigate();
   const [initialFormData, setInitialFormData] = useState({
@@ -29,15 +31,24 @@ const Login = () => {
   });
   const [formData, setFormData] = useState({ ...initialFormData });
   const signIn = useSignIn();
+  const { authenticate } = useAccountService();
+
   const handleFormSubmit = async (event: FormEvent) => {
     try {
       event.preventDefault();
       authenticationSchema.parse(formData);
       const response = await authenticate(formData);
+      const decodedToken = jose.decodeJwt(response.data.token);
+      const fullName = decodedToken?.fullName || '';
+      const role = decodedToken?.role || '';
       console.log(response);
       signIn({
         auth: { token: response.data.token, type: 'Bearer' },
-        userState: { email: formData.email },
+        userState: {
+          email: formData.email,
+          fullName: fullName,
+          role: role,
+        },
       });
 
       navigate('/home');

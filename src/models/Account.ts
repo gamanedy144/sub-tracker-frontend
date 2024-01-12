@@ -21,12 +21,12 @@ export interface RegisterRequest {
 
 export const registerSchema = z
   .object({
-    username: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(6),
-    confirmPassword: z.string().min(6),
-    firstName: z.string().min(2),
-    lastName: z.string().min(2),
+    username: z.string().min(3, 'Min length must be 3'),
+    email: z.string().email('Invalid email'),
+    password: z.string().min(6, 'Min length must be 6'),
+    confirmPassword: z.string(),
+    firstName: z.string().min(2, 'Min length must be 2'),
+    lastName: z.string().min(2, 'Min length must be 2'),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

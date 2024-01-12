@@ -6,6 +6,7 @@ import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
+import { ToastProvider } from 'react-hot-toast';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
