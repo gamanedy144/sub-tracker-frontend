@@ -54,8 +54,9 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     subscriptionName: '',
     provider: initialProvider,
     type: initialType,
-    startDate: '',
+    startDate: new Date().toISOString().split('T')[0],
     endDate: '',
+    price: '0',
   });
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -71,8 +72,12 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       ...formData,
       provider: formData.provider,
       type: formData.type,
+      price: parseFloat(formData.price),
     };
     try {
+      console.log(typeof parsedFormData.price);
+      console.log(formData);
+      console.log(parsedFormData);
       subscriptionSchema.parse(parsedFormData);
       if (JSON.stringify(initialFormData) === JSON.stringify(parsedFormData)) {
         console.log('Form data not changed:', initialFormData);
@@ -95,6 +100,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       type: initialType,
       startDate: '',
       endDate: '',
+      price: '0',
     });
   };
   return (
@@ -118,7 +124,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                   boxSize={12}
                   onClick={onClickHandle}
                   _hover={{
-                    color: 'grey.',
+                    color: 'gray.300',
                     cursor: 'pointer', // Add this line to show that the icon is clickable
                   }}
                 />
@@ -131,6 +137,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
               <CardHeader>
                 <Heading>
                   <FormControl>
+                    <FormLabel>Title</FormLabel>
                     <Input
                       type="text"
                       value={formData.subscriptionName}
@@ -218,11 +225,34 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                         onChange={(e) =>
                           setFormData({ ...formData, endDate: e.target.value })
                         }
+                        min={formData.startDate}
                         // ref={endDateRef}
                       />
                     </FormControl>
                   </HStack>
-
+                  <HStack width={'100%'}>
+                    <FormControl>
+                      <FormLabel>Price</FormLabel>
+                      <Input
+                        type="text"
+                        pattern="[0-9]*\.?[0-9]+"
+                        value={formData.price}
+                        onChange={(e) => {
+                          const inputRegex = /^[0-9]*\.?[0-9]*$/;
+                          if (
+                            inputRegex.test(e.target.value) ||
+                            e.target.value === ''
+                          ) {
+                            setFormData({
+                              ...formData,
+                              price: e.target.value,
+                            });
+                          }
+                        }}
+                        // ref={startDateRef}
+                      />
+                    </FormControl>
+                  </HStack>
                   <HStack>
                     <button type="submit">
                       <Icon

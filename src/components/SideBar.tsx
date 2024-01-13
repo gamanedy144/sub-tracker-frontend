@@ -29,7 +29,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
 
   useEffect(() => {
     setExpanded(shouldShowSidebar);
-  }, [shouldShowSidebar, signOut]);
+  }, [shouldShowSidebar]);
 
   const handleToggleSidebar = () => {
     setExpanded(!expanded);
@@ -48,7 +48,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
       alignItems={expanded ? '' : 'center'}
     >
       <HStack
-        justifyContent="space-between"
+        justifyContent={expanded ? 'space-between' : 'center'}
         padding={'10px'}
         width="100%"
         alignItems="center"

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Divider, Heading } from '@chakra-ui/react';
+import { Box, Divider, HStack, Heading, Icon, Text } from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
 
 // Import your custom components for different routes
@@ -8,6 +8,12 @@ import { Route, Routes } from 'react-router-dom';
 // import Settings from './Settings';
 import SubGrid from './SubGrid';
 import { capitalizeFirstLetter } from '../utils/capitalize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFilter,
+  faFilterCircleDollar,
+  faFilterCircleXmark,
+} from '@fortawesome/free-solid-svg-icons';
 function Insight() {
   return <Box p={4}>Insight Content</Box>;
 }
@@ -25,7 +31,21 @@ const MainContent: FC<MainContentProps> = ({ routeTitle }) => {
   return (
     <Box p={4} height="100%" overflowY="auto">
       <Heading mb={4}>
-        {routeTitle ? capitalizeFirstLetter(routeTitle) : 'Home'}
+        <HStack justifyContent={'space-between'} width="100%">
+          <Text>{routeTitle ? capitalizeFirstLetter(routeTitle) : 'Home'}</Text>
+          {['home', 'report'].includes(routeTitle) && (
+            <Icon
+              as={FontAwesomeIcon}
+              icon={faFilter}
+              boxSize={10}
+              color={'white.500'}
+              _hover={{
+                color: 'gray.300',
+                cursor: 'pointer', // Add this line to show that the icon is clickable
+              }}
+            />
+          )}
+        </HStack>
       </Heading>
       <Divider my={2} />
 

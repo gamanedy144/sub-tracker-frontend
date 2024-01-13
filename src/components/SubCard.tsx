@@ -7,8 +7,11 @@ import {
   HStack,
   VStack,
   Heading,
+  Text,
 } from '@chakra-ui/react';
 import { formatDate, manageDate } from '../utils/dateFormatting';
+import { mapToDisplayText } from '../utils/subscriptionTypeEnum';
+import { capitalizeFirstLetter } from '../utils/capitalize';
 
 interface Props {
   subscription: Subscription;
@@ -33,21 +36,34 @@ const SubCard = ({ subscription }: Props) => {
           <CardHeader>
             <Heading>{subscription.subscriptionName}</Heading>
           </CardHeader>
-          <CardBody>
-            <VStack align={'start'} gap={2} mb={2}>
-              <div>Provider: {subscription.provider.name}</div>
-              <div>Details: {subscription.provider.details}</div>
+          <CardBody width="100%">
+            <VStack align={'start'} width="100%" gap={2}>
+              <Text>
+                <strong>Provider:</strong> {subscription.provider.name}
+              </Text>
+              <Text>
+                <strong>Details:</strong> {subscription.provider.details}
+              </Text>
+
+              <Text>
+                <strong>Type:</strong>{' '}
+                {capitalizeFirstLetter(subscription.type)}
+              </Text>
+              <Text>
+                <strong>Price:</strong> £{subscription.price}
+              </Text>
+
+              <HStack justifyContent={'space-between'} width="100%">
+                <VStack align={'start'} spacing={2}>
+                  <span>Last Occurrence Date:</span>{' '}
+                  <span> {formattedLastOccurrenceDate}</span>
+                </VStack>
+                <VStack align={'start'} spacing={2}>
+                  <span>Next Occurrence Date:</span>{' '}
+                  <span> {formattedNextOccurrenceDate}</span>
+                </VStack>
+              </HStack>
             </VStack>
-            <HStack justifyContent={'space-between'}>
-              <VStack align={'start'} spacing={2}>
-                <span>Last Occurrence Date:</span>{' '}
-                <span> {formattedLastOccurrenceDate}</span>
-              </VStack>
-              <VStack align={'start'} spacing={2}>
-                <span>Next Occurrence Date:</span>{' '}
-                <span> {formattedNextOccurrenceDate}</span>
-              </VStack>
-            </HStack>
           </CardBody>
         </Card>
       </GridItem>

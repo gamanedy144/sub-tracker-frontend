@@ -1,20 +1,17 @@
-import { Grid, GridItem } from '@chakra-ui/react';
-import React from 'react';
+import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import SideBar from './SideBar';
 import MainContent from './MainContent';
 import { useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-interface MainComponentProps {
-  shouldShowSidebar: boolean; // Update the type based on your needs
-  expanded: boolean;
-  onToggleSidebar: (newExpanded: boolean) => void;
-  routeTitle: string;
-}
-const MainComponent: React.FC<MainComponentProps> = ({
-  shouldShowSidebar,
-  expanded,
-  onToggleSidebar,
-}) => {
+interface MainComponentProps {}
+const MainComponent: React.FC<MainComponentProps> = () => {
+  const shouldShowSidebar = useBreakpointValue({ base: false, lg: true });
+  const [expanded, setExpanded] = useState(shouldShowSidebar);
+
+  const handleToggleSidebar = (newExpanded: boolean) => {
+    setExpanded(newExpanded);
+  };
   const location = useLocation();
   const routeTitle = location.pathname.substring(1);
   return (
@@ -32,8 +29,8 @@ const MainComponent: React.FC<MainComponentProps> = ({
       <Toaster position="top-right" />
       <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
         <SideBar
-          shouldShowSidebar={shouldShowSidebar}
-          onToggleSidebar={onToggleSidebar}
+          shouldShowSidebar={shouldShowSidebar!}
+          onToggleSidebar={handleToggleSidebar}
         />
       </GridItem>
 

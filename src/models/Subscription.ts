@@ -18,6 +18,7 @@ export interface Subscription {
   nextOccurrenceDate: Date | string;
   lastOccurrenceDate: Date | string;
   type: SubscriptionTypeEnum;
+  price: number;
 }
 
 export type SubscriptionType = z.infer<typeof subscriptionSchema>;
@@ -28,4 +29,5 @@ export const subscriptionSchema = z.object({
   type: z.string(),
   startDate: z.string().min(1),
   endDate: z.string(),
+  price: z.number().multipleOf(0.01),
 });

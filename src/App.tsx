@@ -15,12 +15,6 @@ import RequireAuth from 'react-auth-kit';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 import { Toaster } from 'react-hot-toast';
 function App() {
-  const shouldShowSidebar = useBreakpointValue({ base: false, lg: true });
-  const [expanded, setExpanded] = useState(shouldShowSidebar);
-
-  const handleToggleSidebar = (newExpanded: boolean) => {
-    setExpanded(newExpanded);
-  };
   const isLoggedIn = false;
 
   return (
@@ -40,16 +34,7 @@ function App() {
         }
       /> */}
         <Route element={<AuthOutlet fallbackPath="/auth/login" />}>
-          <Route
-            path={'/*'}
-            element={
-              <MainComponent
-                shouldShowSidebar={shouldShowSidebar}
-                expanded={expanded}
-                onToggleSidebar={handleToggleSidebar}
-              />
-            }
-          />
+          <Route path={'/*'} element={<MainComponent />} />
         </Route>
       </Routes>
     </>
