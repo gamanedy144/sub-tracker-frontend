@@ -10,7 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { formatDate, manageDate } from '../utils/dateFormatting';
-import { mapToDisplayText } from '../utils/subscriptionTypeEnum';
+import { mapToDisplayText } from '../utils/subscriptionEnums';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 
 interface Props {
@@ -48,6 +48,10 @@ const SubCard = ({ subscription }: Props) => {
               <Text>
                 <strong>Type:</strong>{' '}
                 {capitalizeFirstLetter(subscription.type)}
+              </Text>
+              <Text>
+                <strong>Category:</strong>{' '}
+                {capitalizeFirstLetter(subscription.category)}
               </Text>
               <Text>
                 <strong>Price:</strong> £{subscription.price}

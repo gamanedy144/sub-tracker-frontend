@@ -7,20 +7,14 @@ import { Route, Routes } from 'react-router-dom';
 // import Report from './Report';
 // import Settings from './Settings';
 import SubGrid from './SubGrid';
+import Report from './Report';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFilter,
-  faFilterCircleDollar,
-  faFilterCircleXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 function Insight() {
   return <Box p={4}>Insight Content</Box>;
 }
 
-function Report() {
-  return <Box p={4}>Report Content</Box>;
-}
 function Settings() {
   return <Box p={4}>Settings Content</Box>;
 }

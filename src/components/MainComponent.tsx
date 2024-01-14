@@ -34,7 +34,7 @@ const MainComponent: React.FC<MainComponentProps> = () => {
         />
       </GridItem>
 
-      <GridItem area="main" bg="dodgerblue">
+      <GridItem area="main" bg="dodgerblue" overflowY="auto">
         <MainContent routeTitle={routeTitle} />
       </GridItem>
     </Grid>

@@ -1,11 +1,13 @@
-export enum SubscriptionTypeEnum {
+import { capitalizeFirstLetter } from './capitalize';
+
+enum SubscriptionTypeEnum {
   DAILY = 'daily',
   MONTHLY = 'monthly',
   BIMONTHLY = 'bi-monthly',
   YEARLY = 'yearly',
   WEEKLY = 'weekly',
 }
-export const subscriptionTypes: SubscriptionTypeEnum[] = [
+const subscriptionTypes: SubscriptionTypeEnum[] = [
   SubscriptionTypeEnum.DAILY,
   SubscriptionTypeEnum.MONTHLY,
   SubscriptionTypeEnum.BIMONTHLY,
@@ -33,7 +35,6 @@ const mapToDisplayText = (value: string): string => {
 const mapToBackendValue = (displayText: string): string => {
   return displayText.toUpperCase();
 };
-export { mapToDisplayText, mapToBackendValue };
 export function getEnumKeys<
   T extends string,
   TEnumValue extends string | number
@@ -45,5 +46,39 @@ export const subscriptionTypesObjs = Object.keys(SubscriptionTypeEnum).map(
   (key) => ({
     label: key.toLowerCase(),
     value: mapToBackendValue(key),
+  })
+);
+
+enum SubscriptionCategory {
+  GAMING = 'GAMING',
+  UTILITY = 'UTILITY',
+  HEALTH = 'HEALTH',
+  SPORT = 'SPORT',
+  NEWS = 'NEWS',
+  FOOD = 'FOOD',
+  SOFTWARE = 'SOFTWARE',
+  MUSIC = 'MUSIC',
+  STREAMING = 'STREAMING',
+  BEAUTY = 'BEAUTY',
+  FASHION = 'FASHION',
+  EDUCATION = 'EDUCATION',
+  BOOKS = 'BOOKS',
+  TECHNOLOGY = 'TECHNOLOGY',
+}
+const subscriptionCategories: SubscriptionCategory[] =
+  Object.values(SubscriptionCategory);
+
+export {
+  mapToDisplayText,
+  mapToBackendValue,
+  subscriptionCategories,
+  SubscriptionCategory,
+  SubscriptionTypeEnum,
+  subscriptionTypes,
+};
+export const subscriptionCategoriesObjs = Object.keys(SubscriptionCategory).map(
+  (key) => ({
+    label: capitalizeFirstLetter(key),
+    value: key,
   })
 );

@@ -4,9 +4,9 @@ import {
   subscriptionProviderSchema,
 } from './SubscriptionProvider';
 import {
+  SubscriptionCategory,
   SubscriptionTypeEnum,
-  subscriptionTypes,
-} from '../utils/subscriptionTypeEnum';
+} from '../utils/subscriptionEnums';
 
 export interface Subscription {
   id: number;
@@ -19,6 +19,7 @@ export interface Subscription {
   lastOccurrenceDate: Date | string;
   type: SubscriptionTypeEnum;
   price: number;
+  category: SubscriptionCategory;
 }
 
 export type SubscriptionType = z.infer<typeof subscriptionSchema>;
@@ -26,8 +27,9 @@ export type SubscriptionType = z.infer<typeof subscriptionSchema>;
 export const subscriptionSchema = z.object({
   subscriptionName: z.string().min(3),
   provider: subscriptionProviderSchema,
-  type: z.string(),
+  type: z.string().min(1),
   startDate: z.string().min(1),
   endDate: z.string(),
   price: z.number().multipleOf(0.01),
+  category: z.string().min(1),
 });

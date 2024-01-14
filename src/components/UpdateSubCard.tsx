@@ -26,9 +26,11 @@ import {
   getEnumKeys,
   mapToBackendValue,
   mapToDisplayText,
+  subscriptionCategories,
+  subscriptionCategoriesObjs,
   subscriptionTypes,
   subscriptionTypesObjs,
-} from '../utils/subscriptionTypeEnum';
+} from '../utils/subscriptionEnums';
 import { Subscription, subscriptionSchema } from '../models/Subscription';
 import { useSubscriptionService } from '../services/useSubscriptionService';
 import useData from '../hooks/useData';
@@ -49,7 +51,10 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     subscriptionProviders.find(
       (provider) => provider.name === subscriptionProviders[0]?.name
     ) || null;
+
   const initialType = mapToBackendValue(subscriptionTypes[0]) || '';
+  const initialCategory = subscriptionCategories[0].toString() || '';
+
   const [initialFormData, setInitialFormData] = useState({
     subscriptionName: '',
     provider: initialProvider,
@@ -57,6 +62,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
     startDate: new Date().toISOString().split('T')[0],
     endDate: '',
     price: '0',
+    category: initialCategory,
   });
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -101,6 +107,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       startDate: '',
       endDate: '',
       price: '0',
+      category: initialCategory,
     });
   };
   return (
@@ -194,6 +201,26 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                         }}
                       >
                         {subscriptionTypesObjs.map((obj) => (
+                          <option key={obj.label} value={obj.value}>
+                            {obj.label}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </HStack>
+                  <HStack width="100%">
+                    <FormControl>
+                      <FormLabel>Type</FormLabel>
+                      <Select
+                        value={formData.category || ''}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            category: e.target.value,
+                          });
+                        }}
+                      >
+                        {subscriptionCategoriesObjs.map((obj) => (
                           <option key={obj.label} value={obj.value}>
                             {obj.label}
                           </option>
