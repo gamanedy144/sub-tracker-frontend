@@ -14,6 +14,7 @@ import { useState } from 'react';
 import SubscriptionDetails from './SubscriptionDetails';
 import { Subscription } from '../models/Subscription';
 import { addDays, format } from 'date-fns';
+import { typeColors } from '../resources/theme';
 const Calendar = () => {
   const { data: subscriptions } = useSubscriptions();
 
@@ -24,13 +25,7 @@ const Calendar = () => {
   //     allDay: true,
   //     subscription: subscription,
   //   }));
-  const eventColors = {
-    ['daily']: 'gray',
-    ['weekly']: 'green',
-    ['monthly']: 'blue',
-    ['bimonthly']: 'green',
-    ['yearly']: 'purple',
-  };
+
   const calculateDaysToDisplay = (endDate: Date | null) => {
     if (endDate) {
       const today = new Date();
@@ -55,7 +50,7 @@ const Calendar = () => {
       const eventDate = addDays(subscription.nextOccurrenceDate, i);
       const eventType = subscription.type.toLowerCase(); // Ensure lowercase for matching
 
-      const color = eventColors[eventType] || 'gray'; // Use gray as a default color
+      const color = typeColors[eventType] || 'gray'; // Use gray as a default color
 
       // Customize the event based on subscription type
       if (
@@ -86,14 +81,7 @@ const Calendar = () => {
     []
   );
 
-  //   const handleEventClick = (eventClickInfo) => {
-  //     // Handle the event click, you can set the selected event for displaying details
-  //     setSelectedEvent(eventClickInfo.event);
-  //   };
   const handleEventClick = (info) => {
-    console.log(info.event);
-
-    // Set the event details when an event is clicked
     setSelectedSubscription(info.event.extendedProps.subscription);
   };
 

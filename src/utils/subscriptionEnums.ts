@@ -2,10 +2,10 @@ import { capitalizeFirstLetter } from './capitalize';
 
 enum SubscriptionTypeEnum {
   DAILY = 'daily',
-  MONTHLY = 'monthly',
-  BIMONTHLY = 'bi-monthly',
-  YEARLY = 'yearly',
   WEEKLY = 'weekly',
+  BIMONTHLY = 'bimonthly',
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
 }
 const subscriptionTypes: SubscriptionTypeEnum[] = [
   SubscriptionTypeEnum.DAILY,
@@ -21,7 +21,7 @@ const mapToDisplayText = (value: string): string => {
     case SubscriptionTypeEnum.MONTHLY:
       return 'monthly';
     case SubscriptionTypeEnum.BIMONTHLY:
-      return 'bi-monthly';
+      return 'bimonthly';
     case SubscriptionTypeEnum.YEARLY:
       return 'yearly';
     case SubscriptionTypeEnum.WEEKLY:

@@ -112,7 +112,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
   };
   return (
     <>
-      <GridItem>
+      <GridItem width="100%">
         {!clicked ? (
           <Card textAlign={'center'} height="100%">
             <CardHeader>
@@ -139,7 +139,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
             </CardBody>
           </Card>
         ) : (
-          <Card textAlign={'center'} height="100%">
+          <Card textAlign={'center'} height="100%" width="100%">
             <form onSubmit={handleFormSubmit}>
               <CardHeader>
                 <Heading>

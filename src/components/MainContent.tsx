@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 // import Insight from './Insight';
 // import Report from './Report';
 // import Settings from './Settings';
-import SubGrid from './SubGrid';
+import Home from './Home';
 import Report from './Report';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,7 +45,7 @@ const MainContent: FC<MainContentProps> = ({ routeTitle }) => {
       <Divider my={2} />
 
       <Routes>
-        <Route path="/home" element={<SubGrid />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/insight" element={<Insight />} />
         <Route path="/report" element={<Report />} />
