@@ -3,6 +3,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Icon, Text, flexbox } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
+  faCalendar,
   faChartPie,
   faClockRotateLeft,
   faCog,
@@ -30,6 +31,8 @@ const NavLink: FC<NavLinkProps> = ({
         return <Icon as={FontAwesomeIcon} icon={faChartPie} boxSize={8} />;
       case 'settings':
         return <Icon as={FontAwesomeIcon} icon={faCog} boxSize={8} />;
+      case 'calendar':
+        return <Icon as={FontAwesomeIcon} icon={faCalendar} boxSize={8} />;
       case 'report':
         return (
           <Icon as={FontAwesomeIcon} icon={faClockRotateLeft} boxSize={8} />

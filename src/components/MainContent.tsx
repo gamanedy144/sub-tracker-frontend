@@ -11,6 +11,7 @@ import Report from './Report';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import Calendar from './Calendar';
 function Insight() {
   return <Box p={4}>Insight Content</Box>;
 }
@@ -45,6 +46,7 @@ const MainContent: FC<MainContentProps> = ({ routeTitle }) => {
 
       <Routes>
         <Route path="/home" element={<SubGrid />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/insight" element={<Insight />} />
         <Route path="/report" element={<Report />} />
         <Route path="/settings" element={<Settings />} />

@@ -79,10 +79,13 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         flexDirection={'column'}
         alignItems={'flex-start'}
         css={{ overflow: 'hidden' }}
-        gap={4}
+        gap={5}
       >
         <NavLink to="/home" showText={expanded} iconName="home">
           Home
+        </NavLink>
+        <NavLink to="/calendar" showText={expanded} iconName="calendar">
+          Calendar
         </NavLink>
         <NavLink to="/insight" showText={expanded} iconName="insight">
           Insight
