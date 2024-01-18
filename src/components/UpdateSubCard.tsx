@@ -116,7 +116,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
         {!clicked ? (
           <Card textAlign={'center'} height="100%">
             <CardHeader>
-              <Heading>Add new sub</Heading>
+              <Heading fontSize={32}>Add new sub</Heading>
             </CardHeader>
             <CardBody>
               <HStack
@@ -124,6 +124,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
                 display={'flex'}
                 alignItems={'center'}
                 height={'100%'}
+                mt={-5}
               >
                 <Icon
                   as={FontAwesomeIcon}

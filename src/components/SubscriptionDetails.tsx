@@ -27,9 +27,9 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
     ? formatDate(nextOccurrenceDate)
     : 'N/A';
   return (
-    <Card>
-      <CardHeader>
-        <Heading>{subscription.subscriptionName}</Heading>
+    <Card height="100%">
+      <CardHeader mb={-5}>
+        <Heading fontSize={32}>{subscription.subscriptionName}</Heading>
       </CardHeader>
       <CardBody>
         <VStack align={'start'} width="100%" gap={2}>

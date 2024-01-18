@@ -30,7 +30,7 @@ const SubCard = ({ subscription, onClick }: Props) => {
           cursor={'pointer'}
         >
           <CardHeader mb={-5}>
-            <Heading>{subscription.subscriptionName}</Heading>
+            <Heading fontSize={32}>{subscription.subscriptionName}</Heading>
           </CardHeader>
           <CardBody width="100%">
             <VStack align={'start'} width="100%" gap={2}>
