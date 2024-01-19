@@ -5,23 +5,15 @@ import { Subscription } from '../models/Subscription';
 import { apiService } from './api-client';
 
 export const useSubscriptionService = () => {
-  const useFetchSubscriptions = () => useData<Subscription>('/subscription');
   const authHeader = useAuthHeader();
 
   const postSubscription = async (subscription: Subscription | any) => {
     const controller = new AbortController();
     try {
-      const response = await apiService.post(
-        '/subscription',
-        {
-          ...subscription,
-          user: { id: 1 },
-        },
-        {
-          signal: controller.signal,
-          headers: { Authorization: authHeader },
-        }
-      );
+      const response = await apiService.post('/subscription', subscription, {
+        signal: controller.signal,
+        headers: { Authorization: authHeader },
+      });
       return response.data;
     } catch (error) {
       console.error('Error posting data:', error.message);

@@ -28,9 +28,7 @@ const useData = <T>(endpoint: string) => {
     return () => controller.abort();
   }, [endpoint]);
   useEffect(() => {
-    console.log('Fetching data...');
     fetchData();
-    return () => console.log('Cleanup...');
   }, [fetchData]);
 
   const refetch = useCallback(async () => {

@@ -12,9 +12,7 @@ import { capitalizeFirstLetter } from '../utils/capitalize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
-function Insight() {
-  return <Box p={4}>Insight Content</Box>;
-}
+import Insight from './Insight';
 
 function Settings() {
   return <Box p={4}>Settings Content</Box>;
