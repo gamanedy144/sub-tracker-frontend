@@ -64,7 +64,6 @@ const Home = () => {
         </GridItem>
         <GridItem area="details">
           <VStack width="100%">
-            <UpdateSubCard clicked={isAdding} onClickHandle={onClickHandle} />
             {!isAdding &&
               (subscription ? (
                 <SubscriptionDetails subscription={subscription} />
@@ -78,6 +77,7 @@ const Home = () => {
                   </CardBody>
                 </Card>
               ))}
+            <UpdateSubCard clicked={isAdding} onClickHandle={onClickHandle} />
           </VStack>
         </GridItem>
       </Grid>

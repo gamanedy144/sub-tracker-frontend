@@ -14,7 +14,7 @@ import {
 import CategoryPieChart from './charts/CategoryPieChart';
 import EstimatedBarChart from './charts/EstimatedBarChart';
 const Insight = () => {
-  const { useFetchCurrentYearSpendings } = useChartsService();
+  const { useFetchEstimatedCurrentYear } = useChartsService();
 
   //   const { transformedData: currentSpendings } = useFetchCurrSpendings();
   //   const [userData, setUserData] = useState({
@@ -34,10 +34,9 @@ const Insight = () => {
     // Add more data as needed
   };
 
-  const [currYearSpendings, setCurrYearSpendings] = useState();
+  const [currYearSpendings, setCurrYearSpendings] = useState(null);
 
-  const { transformedData: currentYearSpendings } =
-    useFetchCurrentYearSpendings();
+  const { data: currentYearSpendings } = useFetchEstimatedCurrentYear();
   const prevCurrYearSpendings = useRef(currYearSpendings);
   console.log(currentYearSpendings);
   useEffect(() => {
@@ -67,7 +66,7 @@ const Insight = () => {
     >
       <GridItem area="monthly-spendings" height="100%">
         <Card>
-          <CardHeader>
+          <CardHeader mb={-5}>
             <Heading fontSize={28}>Monthly Spendings</Heading>
           </CardHeader>
           <CardBody>
@@ -78,7 +77,7 @@ const Insight = () => {
 
       <GridItem area="category-spendings" height="50%">
         <Card>
-          <CardHeader>
+          <CardHeader mb={-5}>
             <Heading fontSize={28}>Category</Heading>
           </CardHeader>
           <CardBody>
@@ -88,26 +87,21 @@ const Insight = () => {
       </GridItem>
       <GridItem area="nmk">
         <Card>
-          <CardHeader mb={-3}>
+          <CardHeader mb={-5}>
             <Heading fontSize={28}>Spendings per year</Heading>
           </CardHeader>
           <CardBody fontSize={24}>
-            {currentYearSpendings && currentYearSpendings.length > 0 && (
-              <>
-                £
-                {currentYearSpendings
-                  .find((entry) => entry.label === '2024')
-                  ?.value.toFixed(2)}
-              </>
+            {typeof currentYearSpendings === 'number' && (
+              <>£{currentYearSpendings.toFixed(2)}</>
             )}
           </CardBody>
         </Card>
       </GridItem>
 
-      <GridItem area="estimated-spendings">
+      <GridItem area="estimated-spendings" pb={5}>
         <Card>
-          <CardHeader>
-            <Heading fontSize={28}>Estimated spendings</Heading>
+          <CardHeader mb={-5}>
+            <Heading fontSize={28}>Estimated spendings per Month</Heading>
           </CardHeader>
           <CardBody>
             <EstimatedBarChart />

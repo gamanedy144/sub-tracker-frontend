@@ -77,10 +77,19 @@ export const useChartsService = () => {
     return { transformedData, error, isLoading, refetch };
   };
 
+  const useFetchEstimatedCurrentYear = () => {
+    const { data, error, isLoading, refetch } = useData<number>(
+      '/insight/monthly-spendings-current-year/'
+    );
+
+    return { data, error, isLoading, refetch };
+  };
+
   return {
     useFetchCategorySpendingsMonthly,
     useFetchCurrSpendings,
     useFetchCurrentYearSpendings,
     useFetchEstimationsMonthlySpendings,
+    useFetchEstimatedCurrentYear,
   };
 };
