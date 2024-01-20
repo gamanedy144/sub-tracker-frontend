@@ -24,6 +24,7 @@ export const useChartsService = () => {
           value,
         }))
       : [];
+    transformedData.sort((a, b) => (a.label > b.label ? 1 : -1));
     return { transformedData, error, isLoading, refetch };
   };
   const useFetchCategorySpendingsMonthly = () => {
@@ -31,13 +32,22 @@ export const useChartsService = () => {
       Map<string, Map<string, number>>
     >('/insight/monthly-spendings-category');
 
-    const transformedData = Object.entries(data).map(([label, innerMap]) => ({
-      label,
-      categories: Object.entries(innerMap).map(([category, value]) => ({
-        category,
-        value,
-      })),
-    }));
+    // const transformedData = Object.entries(data).map(([label, innerMap]) => ({
+    //   label,
+    //   categories: Object.entries(innerMap).map(
+    //     ([category, value]: [string, number]) => ({
+    //       category,
+    //       value,
+    //     })
+    //   ),
+    // }));
+    const transformedData = data
+      ? Object.entries(data).map(([label, value]) => ({
+          label,
+          value,
+        }))
+      : [];
+    transformedData.sort((a, b) => (a.label > b.label ? 1 : -1));
     return { transformedData, error, isLoading, refetch };
   };
   const useFetchCurrentYearSpendings = () => {
@@ -50,6 +60,7 @@ export const useChartsService = () => {
           value,
         }))
       : [];
+    transformedData.sort((a, b) => (a.label > b.label ? 1 : -1));
     return { transformedData, error, isLoading, refetch };
   };
   const useFetchEstimationsMonthlySpendings = (months: number) => {
@@ -62,6 +73,7 @@ export const useChartsService = () => {
           value,
         }))
       : [];
+    transformedData.sort((a, b) => (a.label > b.label ? 1 : -1));
     return { transformedData, error, isLoading, refetch };
   };
 

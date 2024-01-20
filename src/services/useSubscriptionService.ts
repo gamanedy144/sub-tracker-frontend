@@ -20,5 +20,5 @@ export const useSubscriptionService = () => {
       throw new Error(`Failed to make POST request: ${error.message}`);
     }
   };
-  return { useFetchSubscriptions, postSubscription };
+  return { postSubscription };
 };

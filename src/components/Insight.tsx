@@ -2,14 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useChartsService } from '../services/useChartsService';
 
 import { number } from 'zod';
-import BarChart from './charts/BarChart';
+import MonthlyBarChart from './charts/MonthlyBarChart';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Grid,
+  GridItem,
+  Heading,
+} from '@chakra-ui/react';
+import CategoryPieChart from './charts/CategoryPieChart';
+import EstimatedBarChart from './charts/EstimatedBarChart';
 const Insight = () => {
-  const {
-    useFetchCurrSpendings,
-    useFetchCategorySpendingsMonthly,
-    useFetchCurrentYearSpendings,
-    useFetchEstimationsMonthlySpendings,
-  } = useChartsService();
+  const { useFetchCurrentYearSpendings } = useChartsService();
 
   //   const { transformedData: currentSpendings } = useFetchCurrSpendings();
   //   const [userData, setUserData] = useState({
@@ -29,29 +34,87 @@ const Insight = () => {
     // Add more data as needed
   };
 
-  const { transformedData: categorySpendingsMonthly } =
-    useFetchCategorySpendingsMonthly();
+  const [currYearSpendings, setCurrYearSpendings] = useState();
 
   const { transformedData: currentYearSpendings } =
     useFetchCurrentYearSpendings();
-  const { transformedData: estimatedMonthlySpendings } =
-    useFetchEstimationsMonthlySpendings(12);
+  const prevCurrYearSpendings = useRef(currYearSpendings);
+  console.log(currentYearSpendings);
+  useEffect(() => {
+    if (prevCurrYearSpendings.current !== currYearSpendings) {
+      setCurrYearSpendings((prevUserData) => {
+        return currentYearSpendings;
+      });
 
-  const [estimatedData, setEstimatedData] = useState({
-    labels: estimatedMonthlySpendings.map((data) => data.label),
-    datasets: [
-      {
-        label: 'Spendings',
-        data: estimatedMonthlySpendings.map((data) => data.value),
-      },
-    ],
-  });
-
+      prevCurrYearSpendings.current = currYearSpendings;
+    }
+  }, [currYearSpendings]);
   return (
-    <>
-      <div>Monthly Spendings</div>
-      <BarChart />
-    </>
+    <Grid
+      templateAreas={` "monthly-spendings category-spendings"
+                        "monthly-spendings nmk"
+                        "monthly-spendings nmk"
+                        "estimated-spendings estimated-spendings" `}
+      templateColumns={{
+        sm: '1fr',
+        lg: '6fr 2fr',
+      }}
+      paddingX={10}
+      paddingY={5}
+      gap={5}
+      height="90%"
+      width="100%"
+    >
+      <GridItem area="monthly-spendings" height="100%">
+        <Card>
+          <CardHeader>
+            <Heading fontSize={28}>Monthly Spendings</Heading>
+          </CardHeader>
+          <CardBody>
+            <MonthlyBarChart />
+          </CardBody>
+        </Card>
+      </GridItem>
+
+      <GridItem area="category-spendings" height="50%">
+        <Card>
+          <CardHeader>
+            <Heading fontSize={28}>Category</Heading>
+          </CardHeader>
+          <CardBody>
+            <CategoryPieChart />
+          </CardBody>
+        </Card>
+      </GridItem>
+      <GridItem area="nmk">
+        <Card>
+          <CardHeader mb={-3}>
+            <Heading fontSize={28}>Spendings per year</Heading>
+          </CardHeader>
+          <CardBody fontSize={24}>
+            {currentYearSpendings && currentYearSpendings.length > 0 && (
+              <>
+                £
+                {currentYearSpendings
+                  .find((entry) => entry.label === '2024')
+                  ?.value.toFixed(2)}
+              </>
+            )}
+          </CardBody>
+        </Card>
+      </GridItem>
+
+      <GridItem area="estimated-spendings">
+        <Card>
+          <CardHeader>
+            <Heading fontSize={28}>Estimated spendings</Heading>
+          </CardHeader>
+          <CardBody>
+            <EstimatedBarChart />
+          </CardBody>
+        </Card>
+      </GridItem>
+    </Grid>
   );
 };
 

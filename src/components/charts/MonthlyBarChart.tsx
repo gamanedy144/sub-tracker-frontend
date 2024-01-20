@@ -4,7 +4,7 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
 import { useChartsService } from '../../services/useChartsService';
 
-const BarChart = () => {
+const MonthlyBarChart = () => {
   ChartJS.register(CategoryScale);
   const { useFetchCurrSpendings } = useChartsService();
 
@@ -47,4 +47,4 @@ const BarChart = () => {
   return <Bar data={userData} />;
 };
 
-export default BarChart;
+export default MonthlyBarChart;
