@@ -40,11 +40,16 @@ import toast from 'react-hot-toast';
 interface UpdateSubCardProps {
   clicked: boolean;
   onClickHandle: () => void;
+  subscriptionToUpdate?: Subscription;
 }
-const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
+const UpdateSubCard: FC<UpdateSubCardProps> = ({
+  clicked,
+  onClickHandle,
+  subscriptionToUpdate,
+}) => {
   const { data: subscriptionProviders } = useSubscriptionProviders();
 
-  const { postSubscription } = useSubscriptionService();
+  const { saveSubscription, updateSubscription } = useSubscriptionService();
   const { refetch } = useData<Subscription>('/subscription');
   const [loadingProviders, setLoadingProviders] = useState(true);
   const initialProvider =
@@ -81,15 +86,19 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       price: parseFloat(formData.price),
     };
     try {
-      console.log(typeof parsedFormData.price);
-      console.log(formData);
-      console.log(parsedFormData);
       subscriptionSchema.parse(parsedFormData);
-      if (JSON.stringify(initialFormData) === JSON.stringify(parsedFormData)) {
-        console.log('Form data not changed:', initialFormData);
+      if (subscriptionToUpdate) {
+        // Editing existing subscription
+        updateSubscription({ ...parsedFormData, id: subscriptionToUpdate.id });
+
+        console.log('Editing existing subscription:', parsedFormData);
+        // Make API call to update the existing subscription
+        // Use subscriptionToUpdate.id to identify the subscription
+        // updateSubscription(subscriptionToUpdate.id, parsedFormData);
+      } else {
+        saveSubscription(parsedFormData);
+        console.log('Saving new data:', parsedFormData);
       }
-      console.log('Form data submitted:', parsedFormData);
-      postSubscription(parsedFormData);
       resetInputs();
     } catch (error) {
       event.preventDefault();
@@ -110,6 +119,31 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({ clicked, onClickHandle }) => {
       category: initialCategory,
     });
   };
+  useEffect(() => {
+    if (subscriptionProviders.length > 0 && subscriptionToUpdate) {
+      setFormData({
+        subscriptionName: subscriptionToUpdate.subscriptionName || '',
+        provider:
+          subscriptionProviders.find(
+            (provider) => provider.name === subscriptionToUpdate.provider?.name
+          ) || null,
+        type: mapToBackendValue(subscriptionToUpdate.type) || '',
+        startDate:
+          subscriptionToUpdate.startDate instanceof Date
+            ? subscriptionToUpdate.startDate.toISOString().split('T')[0]
+            : subscriptionToUpdate.startDate ||
+              new Date().toISOString().split('T')[0],
+        endDate:
+          subscriptionToUpdate.endDate instanceof Date
+            ? subscriptionToUpdate.endDate.toISOString().split('T')[0]
+            : subscriptionToUpdate.endDate || '', // Set to null if endDate is not set
+        price: subscriptionToUpdate.price.toString() || '0',
+        category: subscriptionToUpdate.category || initialCategory,
+      });
+    }
+    setLoadingProviders(false);
+  }, [subscriptionProviders, subscriptionToUpdate]);
+
   return (
     <>
       <GridItem width="100%">

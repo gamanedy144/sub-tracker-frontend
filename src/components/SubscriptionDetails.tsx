@@ -12,9 +12,11 @@ import { capitalizeFirstLetter } from '../utils/capitalize';
 import { formatDate, manageDate } from '../utils/dateFormatting';
 interface SubscriptionDetailsProps {
   subscription: Subscription;
+  handleEditClick: (subscription: Subscription) => void;
 }
 const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
   subscription,
+  handleEditClick,
 }) => {
   const lastOccurrenceDate = subscription.lastOccurrenceDate
     ? manageDate(subscription.lastOccurrenceDate)
@@ -71,6 +73,9 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
               {formattedNextOccurrenceDate}
             </Text>
           )}
+          <button onClick={() => handleEditClick(subscription)}>
+            Edit sub
+          </button>
         </VStack>
         {/* Add more details as needed */}
       </CardBody>
