@@ -17,7 +17,7 @@ import SubscriptionDetails from './SubscriptionDetails';
 import { Subscription } from '../models/Subscription';
 
 const Home = () => {
-  const { data: subscriptions } = useSubscriptions();
+  const { sortedData: subscriptions } = useSubscriptions();
 
   const [isAdding, setIsAdding] = useState(false);
   const [subscription, setSubscription] = useState(null);
@@ -34,11 +34,21 @@ const Home = () => {
   return (
     <>
       <Grid
-        templateAreas={` "subgrid details"`}
-        templateColumns={{
-          sm: '1fr',
-          lg: '3fr 1fr',
-        }}
+        templateAreas={
+          subscriptions.length > 0 ? ` "subgrid details"` : ` "details"`
+        }
+        templateColumns={
+          subscriptions.length > 0
+            ? {
+                sm: '1fr',
+                lg: '3fr 1fr',
+              }
+            : {
+                sm: '1fr',
+                lg: '1fr',
+              }
+        }
+        templateRows={subscriptions.length > 0 ? 'auto' : '1fr'}
         paddingX={10}
         paddingY={5}
         gap={5}
@@ -62,9 +72,22 @@ const Home = () => {
             ))}
           </Grid>
         </GridItem>
-        <GridItem area="details">
-          <VStack width="100%">
+        <GridItem
+          area="details"
+          display={subscriptions.length > 0 ? '' : 'flex'}
+          flexDirection={'column'}
+          alignItems={subscriptions.length > 0 ? '' : 'center'}
+          justifyContent={subscriptions.length > 0 ? '' : 'center'}
+          height={subscriptions.length > 0 ? 'auto' : '100%'}
+        >
+          <VStack
+            width={subscriptions.length > 0 ? '100%' : '30%'}
+            alignItems={subscriptions.length > 0 ? '' : 'center'}
+            justifyContent={subscriptions.length > 0 ? '' : 'center'}
+            height={subscriptions.length > 0 ? 'auto' : '100%'}
+          >
             {!isAdding &&
+              subscriptions.length > 0 &&
               (subscription ? (
                 <SubscriptionDetails subscription={subscription} />
               ) : (

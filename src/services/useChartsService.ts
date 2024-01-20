@@ -1,5 +1,3 @@
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import { apiService } from './api-client';
 import useData from '../hooks/useData';
 
 export interface MonthlyData {

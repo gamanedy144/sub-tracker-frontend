@@ -13,10 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
 import Insight from './Insight';
+import Settings from './Settings';
 
-function Settings() {
-  return <Box p={4}>Settings Content</Box>;
-}
 interface MainContentProps {
   routeTitle: string;
 }

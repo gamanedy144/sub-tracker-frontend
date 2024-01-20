@@ -88,7 +88,7 @@ const Insight = () => {
       <GridItem area="nmk">
         <Card>
           <CardHeader mb={-5}>
-            <Heading fontSize={28}>Spendings per year</Heading>
+            <Heading fontSize={28}>Spendings this year</Heading>
           </CardHeader>
           <CardBody fontSize={24}>
             {typeof currentYearSpendings === 'number' && (

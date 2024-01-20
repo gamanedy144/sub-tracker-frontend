@@ -15,8 +15,6 @@ import RequireAuth from 'react-auth-kit';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 import { Toaster } from 'react-hot-toast';
 function App() {
-  const isLoggedIn = false;
-
   return (
     <>
       <Routes>
