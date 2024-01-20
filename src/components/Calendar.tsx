@@ -14,9 +14,9 @@ import { useState } from 'react';
 import SubscriptionDetails from './SubscriptionDetails';
 import { Subscription } from '../models/Subscription';
 import { addDays, format } from 'date-fns';
-import { typeColors } from '../resources/theme';
+import { calendarColors, typeColors } from '../resources/theme';
 const Calendar = () => {
-  const { data: subscriptions } = useSubscriptions();
+  const { sortedData: subscriptions } = useSubscriptions();
 
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   //   const events = subscriptions.map((subscription) => ({
@@ -50,7 +50,7 @@ const Calendar = () => {
       const eventDate = addDays(subscription.nextOccurrenceDate, i);
       const eventType = subscription.type.toLowerCase(); // Ensure lowercase for matching
 
-      const color = typeColors[eventType] || 'gray'; // Use gray as a default color
+      const color = calendarColors[eventType] || 'gray'; // Use gray as a default color
 
       // Customize the event based on subscription type
       if (
@@ -62,7 +62,7 @@ const Calendar = () => {
       ) {
         const event = {
           title: subscription.subscriptionName,
-          start: eventDate.toISOString(),
+          start: eventDate,
           allDay: true,
           color,
           subscriptionType: subscription.type, // Custom property to store subscription type
@@ -76,10 +76,13 @@ const Calendar = () => {
     return events;
   };
 
-  const events = subscriptions.reduce(
-    (allEvents, subscription) => allEvents.concat(generateEvents(subscription)),
-    []
-  );
+  const events = subscriptions
+    ? subscriptions.reduce(
+        (allEvents, subscription) =>
+          allEvents.concat(generateEvents(subscription)),
+        []
+      )
+    : [];
 
   const handleEventClick = (info) => {
     setSelectedSubscription(info.event.extendedProps.subscription);

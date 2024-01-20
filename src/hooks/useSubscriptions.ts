@@ -4,6 +4,7 @@ import useData from './useData';
 const useSubscriptions = () => {
   const { data, error, isLoading, refetch } =
     useData<Subscription>('/subscription');
+
   const convertToComparable = (value) => {
     return typeof value === 'string' ? new Date(value) : value;
   };
@@ -16,6 +17,8 @@ const useSubscriptions = () => {
         return dateA - dateB;
       })
     : null;
+
+  console.log(sortedData);
 
   return { sortedData, error, isLoading, refetch };
 };

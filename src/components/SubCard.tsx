@@ -12,14 +12,14 @@ import {
 import { formatDate, manageDate } from '../utils/dateFormatting';
 import { mapToDisplayText } from '../utils/subscriptionEnums';
 import { capitalizeFirstLetter } from '../utils/capitalize';
-import { typeColors } from '../resources/theme';
+import { cardColors, typeColors } from '../resources/theme';
 
 interface Props {
   subscription: Subscription;
   onClick: (subscription: Subscription) => void;
 }
 const SubCard = ({ subscription, onClick }: Props) => {
-  const backgroundColor = typeColors[subscription.type.toLowerCase()] || 'gray';
+  const backgroundColor = cardColors[subscription.type.toLowerCase()] || 'gray';
 
   return (
     <>

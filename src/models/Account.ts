@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export interface User {
   id: number;
-  username: string;
+  appUsername: string;
   email: string;
   password: string;
   firstName: string;
@@ -11,17 +11,26 @@ export interface User {
 }
 
 export interface RegisterRequest {
-  username: string;
+  appUsername: string;
   email: string;
   password: string;
   confirmPassword: string;
   firstName: string;
   lastName: string;
 }
-
+export interface UpdateRequest {
+  appUsername: string;
+  firstName: string;
+  lastName: string;
+}
+export interface UpdatePasswordRequest {
+  currentPassword: string;
+  confirmPassword: string;
+  newPassword: string;
+}
 export const registerSchema = z
   .object({
-    username: z.string().min(3, 'Min length must be 3'),
+    appUsername: z.string().min(3, 'Min length must be 3'),
     email: z.string().email('Invalid email'),
     password: z.string().min(6, 'Min length must be 6'),
     confirmPassword: z.string(),
@@ -37,6 +46,24 @@ export const registerSchema = z
     }
   });
 
+export const updateSchema = z.object({
+  appUsername: z.string().min(3, 'Min length must be 3'),
+  firstName: z.string().min(2, 'Min length must be 2'),
+  lastName: z.string().min(2, 'Min length must be 2'),
+});
+export const updatePasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, 'Min length must be 6'),
+    confirmPassword: z.string(),
+  })
+  .superRefine(({ confirmPassword, newPassword }, ctx) => {
+    if (confirmPassword !== newPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'The passwords did not match',
+      });
+    }
+  });
 export interface AuthenticationRequest {
   email: string;
   password: string;

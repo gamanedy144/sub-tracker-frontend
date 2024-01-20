@@ -51,8 +51,8 @@ const Insight = () => {
   return (
     <Grid
       templateAreas={` "monthly-spendings category-spendings"
-                        "monthly-spendings nmk"
-                        "monthly-spendings nmk"
+                        "monthly-spendings spendings-this-year"
+                        "monthly-spendings empty"
                         "estimated-spendings estimated-spendings" `}
       templateColumns={{
         sm: '1fr',
@@ -85,7 +85,7 @@ const Insight = () => {
           </CardBody>
         </Card>
       </GridItem>
-      <GridItem area="nmk">
+      <GridItem area="spendings-this-year">
         <Card>
           <CardHeader mb={-5}>
             <Heading fontSize={28}>Spendings this year</Heading>
