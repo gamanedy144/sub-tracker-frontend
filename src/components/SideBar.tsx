@@ -27,6 +27,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
   const signOut = useSignOut();
   const navigate = useNavigate();
 
+  const currentUser = useAuthUser();
   useEffect(() => {
     setExpanded(shouldShowSidebar);
   }, [shouldShowSidebar]);
@@ -93,6 +94,11 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
         <NavLink to="/report" showText={expanded} iconName="report">
           Report
         </NavLink>
+        {currentUser.role === 'ADMIN' && (
+          <NavLink to="/admin/dashboard" showText={expanded} iconName="admin">
+            Admin
+          </NavLink>
+        )}
         <Divider my={4} />
         <NavLink to="/settings" showText={expanded} iconName="settings">
           Settings

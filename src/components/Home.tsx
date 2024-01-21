@@ -22,10 +22,12 @@ const Home = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [subscription, setSubscription] = useState();
   const [subscriptionToEdit, setSubscriptionToEdit] = useState();
+
   const onClickHandle = () => {
     setIsAdding(!isAdding);
     setSubscription(null);
   };
+
   const handleClickSubscription = (subscription: Subscription) => {
     setIsAdding(false);
     setSubscription(subscription);
@@ -34,7 +36,6 @@ const Home = () => {
   const handleClickEdit = (subscription: Subscription) => {
     setIsAdding(!isAdding);
     setSubscriptionToEdit(subscription);
-    console.log(subscriptionToEdit);
   };
 
   return (

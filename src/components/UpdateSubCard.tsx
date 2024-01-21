@@ -36,6 +36,7 @@ import { useSubscriptionService } from '../services/useSubscriptionService';
 import useData from '../hooks/useData';
 import { fromZodError } from 'zod-validation-error';
 import toast from 'react-hot-toast';
+import { useLocation } from 'react-router-dom';
 
 interface UpdateSubCardProps {
   clicked: boolean;
@@ -47,11 +48,12 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
   onClickHandle,
   subscriptionToUpdate,
 }) => {
+  const location = useLocation();
   const { data: subscriptionProviders } = useSubscriptionProviders();
-
   const { saveSubscription, updateSubscription } = useSubscriptionService();
   const { refetch } = useData<Subscription>('/subscription');
   const [loadingProviders, setLoadingProviders] = useState(true);
+
   const initialProvider =
     subscriptionProviders.find(
       (provider) => provider.name === subscriptionProviders[0]?.name
@@ -147,7 +149,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
   return (
     <>
       <GridItem width="100%">
-        {!clicked ? (
+        {!clicked && !location.pathname.includes('/calendar') ? (
           <Card textAlign={'center'} height="100%">
             <CardHeader>
               <Heading fontSize={32}>Add new sub</Heading>
@@ -173,7 +175,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
               </HStack>
             </CardBody>
           </Card>
-        ) : (
+        ) : clicked ? (
           <Card textAlign={'center'} height="100%" width="100%">
             <form onSubmit={handleFormSubmit}>
               <CardHeader>
@@ -345,6 +347,8 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
               </CardBody>
             </form>
           </Card>
+        ) : (
+          <></>
         )}
       </GridItem>
     </>

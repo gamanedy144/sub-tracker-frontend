@@ -12,7 +12,7 @@ import { capitalizeFirstLetter } from '../utils/capitalize';
 import { formatDate, manageDate } from '../utils/dateFormatting';
 interface SubscriptionDetailsProps {
   subscription: Subscription;
-  handleEditClick: (subscription: Subscription) => void;
+  handleEditClick?: (subscription: Subscription) => void | any;
 }
 const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
   subscription,
@@ -28,6 +28,7 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
   const formattedNextOccurrenceDate = nextOccurrenceDate
     ? formatDate(nextOccurrenceDate)
     : 'N/A';
+
   return (
     <Card height="100%">
       <CardHeader mb={-5}>

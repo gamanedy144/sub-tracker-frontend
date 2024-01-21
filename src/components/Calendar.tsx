@@ -15,16 +15,31 @@ import SubscriptionDetails from './SubscriptionDetails';
 import { Subscription } from '../models/Subscription';
 import { addDays, format } from 'date-fns';
 import { calendarColors, typeColors } from '../resources/theme';
+import useTransactions from '../hooks/useTransactions';
+import UpdateSubCard from './UpdateSubCard';
+import { Transaction } from '../models/Transaction';
 const Calendar = () => {
   const { sortedData: subscriptions } = useSubscriptions();
+  const { sortedData: transactions } = useTransactions();
 
-  const [selectedSubscription, setSelectedSubscription] = useState(null);
-  //   const events = subscriptions.map((subscription) => ({
-  //     title: subscription.subscriptionName,
-  //     start: subscription.nextOccurrenceDate,
-  //     allDay: true,
-  //     subscription: subscription,
-  //   }));
+  const [isAdding, setIsAdding] = useState(false);
+  const [subscriptionToEdit, setSubscriptionToEdit] = useState();
+  const [selectedSubscription, setSelectedSubscription] = useState();
+
+  const handleClickEdit = (subscription: Subscription) => {
+    setIsAdding(true);
+    setSubscriptionToEdit(subscription);
+  };
+
+  const handleEventClick = (info) => {
+    setSelectedSubscription(info.event.extendedProps.subscription);
+    console.log(info.event.extendedProps.transaction);
+    setIsAdding(false);
+  };
+  const onClickHandle = () => {
+    setIsAdding(!isAdding);
+    setSelectedSubscription(null);
+  };
 
   const calculateDaysToDisplay = (endDate: Date | null) => {
     if (endDate) {
@@ -75,6 +90,29 @@ const Calendar = () => {
 
     return events;
   };
+  const generateEventsFromTransactions = (transactions: Transaction[]) => {
+    const events = [];
+
+    transactions.forEach((transaction) => {
+      const color =
+        calendarColors[transaction.subscription.type.toLowerCase()] || 'gray';
+      const event = {
+        title: transaction.subscription.subscriptionName,
+        start: new Date(transaction.timestamp),
+        allDay: true,
+        color, // You can set a default color
+        transaction: transaction,
+        subscription: transaction.subscription,
+        subscriptionType: transaction.subscription.type,
+      };
+
+      events.push(event);
+    });
+
+    return events;
+  };
+
+  const transactionEvents = generateEventsFromTransactions(transactions);
 
   const events = subscriptions
     ? subscriptions.reduce(
@@ -84,9 +122,7 @@ const Calendar = () => {
       )
     : [];
 
-  const handleEventClick = (info) => {
-    setSelectedSubscription(info.event.extendedProps.subscription);
-  };
+  const allEvents = [...events, ...transactionEvents];
 
   return (
     <Grid
@@ -105,15 +141,35 @@ const Calendar = () => {
           height="100%"
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          events={events}
+          events={allEvents}
           eventClick={handleEventClick}
         />
       </GridItem>
 
       <GridItem area="details" bg="dodgerblue">
-        {selectedSubscription && (
-          <SubscriptionDetails subscription={selectedSubscription} />
-        )}
+        {!isAdding &&
+          subscriptions &&
+          subscriptions.length > 0 &&
+          (selectedSubscription ? (
+            <SubscriptionDetails
+              subscription={selectedSubscription}
+              handleEditClick={handleClickEdit}
+            />
+          ) : (
+            <Card width="100%">
+              <CardHeader mb={-5}>
+                <Heading fontSize={32}>Details</Heading>
+              </CardHeader>
+              <CardBody>
+                <Text>Click on any subscription to show details</Text>
+              </CardBody>
+            </Card>
+          ))}
+        <UpdateSubCard
+          clicked={isAdding}
+          onClickHandle={onClickHandle}
+          subscriptionToUpdate={subscriptionToEdit}
+        />
       </GridItem>
     </Grid>
   );

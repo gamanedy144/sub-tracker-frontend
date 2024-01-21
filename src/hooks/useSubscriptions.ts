@@ -18,8 +18,6 @@ const useSubscriptions = () => {
       })
     : null;
 
-  console.log(sortedData);
-
   return { sortedData, error, isLoading, refetch };
 };
 export default useSubscriptions;

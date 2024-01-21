@@ -8,6 +8,7 @@ import {
   faClockRotateLeft,
   faCog,
   faHouse,
+  faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 interface NavLinkProps {
@@ -37,6 +38,8 @@ const NavLink: FC<NavLinkProps> = ({
         return (
           <Icon as={FontAwesomeIcon} icon={faClockRotateLeft} boxSize={8} />
         );
+      case 'admin':
+        return <Icon as={FontAwesomeIcon} icon={faUserTie} boxSize={8} />;
       default:
         return <CloseIcon />;
     }

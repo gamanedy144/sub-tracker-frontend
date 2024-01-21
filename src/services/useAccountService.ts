@@ -59,6 +59,19 @@ export const useAccountService = () => {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await apiService.get<User[]>('user', {
+        signal: controller.signal,
+        headers: { Authorization: authHeader },
+      });
+      return response;
+    } catch (error) {
+      console.error('Error getting data:', error.message);
+      throw new Error(`Failed to make GET request: ${error.message}`);
+    }
+  };
+
   const updatePassword = async (password: UpdatePasswordRequest) => {
     try {
       console.log('ceau sunt aici');
@@ -90,5 +103,6 @@ export const useAccountService = () => {
     fetchUserDetails,
     updateUser,
     updatePassword,
+    fetchUsers,
   };
 };

@@ -55,7 +55,6 @@ const Register = () => {
     } catch (error) {
       const validationError = fromZodError(error);
       toast.error(`Failed to register: ${validationError}`);
-      console.error('Invalid user details: ', error.errors);
     }
   };
   const resetInputs = () => {

@@ -83,11 +83,27 @@ export const useChartsService = () => {
     return { data, error, isLoading, refetch };
   };
 
+  const useFetchUsersCreatedMonthly = () => {
+    const { data, error, isLoading, refetch } = useData<Map<string, number>>(
+      '/insight/admin/users-created-month'
+    );
+
+    const transformedData = data
+      ? Object.entries(data).map(([label, value]) => ({
+          label,
+          value,
+        }))
+      : [];
+    transformedData.sort((a, b) => (a.label > b.label ? 1 : -1));
+    return { transformedData, error, isLoading, refetch };
+  };
+
   return {
     useFetchCategorySpendingsMonthly,
     useFetchCurrSpendings,
     useFetchCurrentYearSpendings,
     useFetchEstimationsMonthlySpendings,
     useFetchEstimatedCurrentYear,
+    useFetchUsersCreatedMonthly,
   };
 };

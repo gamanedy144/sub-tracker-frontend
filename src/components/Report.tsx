@@ -21,16 +21,7 @@ import moment from 'moment';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 
 const Report = () => {
-  const { data: transactions, refetch } = useTransactions();
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    timeZoneName: 'short',
-  };
+  const { sortedData: transactions, refetch } = useTransactions();
 
   const toUserFriendlyDate = (date: Date) => {
     const momentDate = moment(date);

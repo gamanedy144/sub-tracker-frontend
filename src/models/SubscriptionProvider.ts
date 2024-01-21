@@ -11,7 +11,6 @@ export type SubscriptionProviderType = z.infer<
 >;
 
 export const subscriptionProviderSchema = z.object({
-  id: z.number(),
   name: z.string(),
   details: z.string(),
 });

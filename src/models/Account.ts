@@ -8,6 +8,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: string;
+  createTs: Date;
 }
 
 export interface RegisterRequest {
