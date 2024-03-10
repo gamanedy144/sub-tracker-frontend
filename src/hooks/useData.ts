@@ -29,6 +29,12 @@ const useData = <T>(endpoint: string) => {
   }, [endpoint]);
   useEffect(() => {
     fetchData();
+
+    return () => {
+      // Cleanup function to cancel ongoing requests
+      const controller = new AbortController();
+      controller.abort();
+    };
   }, [fetchData]);
 
   const refetch = useCallback(async () => {

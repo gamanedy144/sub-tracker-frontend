@@ -9,7 +9,7 @@ const EstimatedBarChart = () => {
   const { useFetchEstimationsMonthlySpendings } = useChartsService();
 
   const { transformedData: estimatedSpendings } =
-    useFetchEstimationsMonthlySpendings(13);
+    useFetchEstimationsMonthlySpendings(12);
   const [userData, setUserData] = useState({
     labels: estimatedSpendings.map((data) => data.label),
     datasets: [
@@ -42,6 +42,11 @@ const EstimatedBarChart = () => {
                   'rgba(54, 162, 235, 0.2)',
                   'rgba(153, 102, 255, 0.2)',
                   'rgba(201, 203, 207, 0.2)',
+                  'rgba(150, 90, 75, 0.2)',
+                  'rgba(150, 203, 207, 0.2)',
+                  'rgba(67, 255, 101, 0.2)',
+                  'rgba(10, 10, 207, 0.2)',
+                  'rgba(125, 10, 10, 0.2)',
                 ],
                 borderColor: [
                   'rgb(255, 99, 132)',
@@ -51,6 +56,11 @@ const EstimatedBarChart = () => {
                   'rgb(54, 162, 235)',
                   'rgb(153, 102, 255)',
                   'rgb(201, 203, 207)',
+                  'rgba(150, 90, 75)',
+                  'rgba(150, 203, 207)',
+                  'rgba(67, 255, 101)',
+                  'rgba(10, 10, 207)',
+                  'rgba(125, 10, 10)',
                 ],
                 borderWidth: 1,
               },

@@ -49,7 +49,7 @@ const Home = () => {
             subscriptions.length > 0
               ? {
                   sm: '1fr',
-                  lg: '3fr 1fr',
+                  lg: '1fr 400px',
                 }
               : {
                   sm: '1fr',
@@ -57,9 +57,9 @@ const Home = () => {
                 }
           }
           templateRows={subscriptions.length > 0 ? 'auto' : '1fr'}
-          paddingX={10}
+          paddingX={5}
           paddingY={5}
-          gap={5}
+          gap={1}
           height="90%"
         >
           <GridItem area="subgrid">
