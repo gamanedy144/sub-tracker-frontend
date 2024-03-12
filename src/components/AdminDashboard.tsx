@@ -10,11 +10,11 @@ import {
   Grid,
   GridItem,
   HStack,
-  Heading,
   Input,
   Textarea,
   VStack,
   Text,
+  Heading,
 } from '@chakra-ui/react';
 
 import moment from 'moment';
@@ -146,7 +146,6 @@ const AdminDashboard = () => {
           </Card>
         </GridItem>
       </Grid>
-      <div>AdminDashboard</div>
     </GridItem>
   );
 };

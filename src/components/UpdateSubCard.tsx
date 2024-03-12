@@ -247,7 +247,7 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
                   </HStack>
                   <HStack width="100%">
                     <FormControl>
-                      <FormLabel>Type</FormLabel>
+                      <FormLabel>Category</FormLabel>
                       <Select
                         value={formData.category || ''}
                         onChange={(e) => {

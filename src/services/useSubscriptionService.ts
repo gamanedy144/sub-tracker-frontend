@@ -39,5 +39,21 @@ export const useSubscriptionService = () => {
     }
   };
 
-  return { saveSubscription, updateSubscription };
+  const deleteSubscription = async (subscriptionId: number) => {
+    const controller = new AbortController();
+    try {
+      const response = await apiService.delete(
+        '/subscription/' + subscriptionId,
+        {
+          signal: controller.signal,
+          headers: { Authorization: authHeader },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error posting data:', error.message);
+      throw new Error(`Failed to make DELETE request: ${error.message}`);
+    }
+  };
+  return { saveSubscription, updateSubscription, deleteSubscription };
 };

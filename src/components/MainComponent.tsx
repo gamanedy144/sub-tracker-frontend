@@ -1,4 +1,10 @@
-import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Card,
+  Grid,
+  GridItem,
+  useBreakpointValue,
+  useColorMode,
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import SideBar from './SideBar';
 import MainContent from './MainContent';
@@ -14,6 +20,7 @@ const MainComponent: React.FC<MainComponentProps> = () => {
   };
   const location = useLocation();
   const routeTitle = location.pathname.substring(1);
+  const { colorMode } = useColorMode();
   return (
     <Grid
       templateAreas={` "aside main"`}
@@ -27,15 +34,19 @@ const MainComponent: React.FC<MainComponentProps> = () => {
       height="100vh"
     >
       <Toaster position="top-right" />
-      <GridItem area="aside" bg="gold" height="100%" overflowY="auto">
-        <SideBar
-          shouldShowSidebar={shouldShowSidebar!}
-          onToggleSidebar={handleToggleSidebar}
-        />
+      <GridItem area="aside" height="100%" overflowY="auto">
+        <Card height={'100%'} bg={colorMode === 'dark' ? 'gray' : 'lightgray'}>
+          <SideBar
+            shouldShowSidebar={shouldShowSidebar!}
+            onToggleSidebar={handleToggleSidebar}
+          />
+        </Card>
       </GridItem>
 
-      <GridItem area="main" bg="dodgerblue" overflowY="auto">
-        <MainContent routeTitle={routeTitle} />
+      <GridItem area="main" overflowY="auto">
+        <Card height={'100%'} bg={colorMode === 'dark' ? 'gray' : 'lightgray'}>
+          <MainContent routeTitle={routeTitle} />
+        </Card>
       </GridItem>
     </Grid>
   );

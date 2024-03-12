@@ -1,7 +1,9 @@
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
+  HStack,
   Heading,
   Text,
   VStack,
@@ -10,6 +12,7 @@ import React, { FC } from 'react';
 import { Subscription } from '../models/Subscription';
 import { capitalizeFirstLetter } from '../utils/capitalize';
 import { formatDate, manageDate } from '../utils/dateFormatting';
+import { useSubscriptionService } from '../services/useSubscriptionService';
 interface SubscriptionDetailsProps {
   subscription: Subscription;
   handleEditClick?: (subscription: Subscription) => void | any;
@@ -18,6 +21,7 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
   subscription,
   handleEditClick,
 }) => {
+  const { deleteSubscription } = useSubscriptionService();
   const lastOccurrenceDate = subscription.lastOccurrenceDate
     ? manageDate(subscription.lastOccurrenceDate)
     : manageDate(subscription.startDate);
@@ -28,7 +32,10 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
   const formattedNextOccurrenceDate = nextOccurrenceDate
     ? formatDate(nextOccurrenceDate)
     : 'N/A';
-
+  const handleDeleteClick = (subscriptionId: number) => {
+    deleteSubscription(subscriptionId);
+    window.location.reload();
+  };
   return (
     <Card height="100%">
       <CardHeader mb={-5}>
@@ -74,9 +81,27 @@ const SubscriptionDetails: FC<SubscriptionDetailsProps> = ({
               {formattedNextOccurrenceDate}
             </Text>
           )}
-          <button onClick={() => handleEditClick(subscription)}>
-            Edit sub
-          </button>
+          <HStack
+            width={'100%'}
+            justifyContent={'center'}
+            mt={5}
+            mb={5}
+            gap={5}
+          >
+            <Button
+              onClick={() => handleEditClick(subscription)}
+              colorScheme="blue"
+            >
+              Edit sub
+            </Button>
+            <Button
+              onClick={() => handleDeleteClick(subscription.id)}
+              type="submit"
+              colorScheme="red"
+            >
+              Delete
+            </Button>
+          </HStack>
         </VStack>
         {/* Add more details as needed */}
       </CardBody>

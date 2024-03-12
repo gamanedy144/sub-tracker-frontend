@@ -8,6 +8,7 @@ import {
   Divider,
   Text,
   Icon,
+  useColorMode,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import NavLink from './NavLink';
@@ -26,6 +27,7 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
   const auth = useAuthUser();
   const signOut = useSignOut();
   const navigate = useNavigate();
+  const { colorMode } = useColorMode();
 
   const currentUser = useAuthUser();
   useEffect(() => {
@@ -99,7 +101,10 @@ const SideBar: FC<SideBarProps> = ({ shouldShowSidebar, onToggleSidebar }) => {
             Admin
           </NavLink>
         )}
-        <Divider my={4} />
+        <Divider
+          my={4}
+          borderColor={colorMode === 'dark' ? 'white' : 'black'}
+        />
         <NavLink to="/settings" showText={expanded} iconName="settings">
           Settings
         </NavLink>
