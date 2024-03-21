@@ -146,7 +146,7 @@ const Calendar = () => {
         />
       </GridItem>
 
-      <GridItem area="details" bg="dodgerblue">
+      <GridItem area="details">
         {!isAdding &&
           subscriptions &&
           subscriptions.length > 0 &&

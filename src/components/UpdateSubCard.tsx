@@ -11,6 +11,8 @@ import {
   Input,
   Select,
   VStack,
+  Text,
+  Button,
 } from '@chakra-ui/react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,10 +24,7 @@ import {
 import { FC, FormEvent, useEffect, useState } from 'react';
 import useSubscriptionProviders from '../hooks/useSubscriptionProviders';
 import {
-  SubscriptionTypeEnum,
-  getEnumKeys,
   mapToBackendValue,
-  mapToDisplayText,
   subscriptionCategories,
   subscriptionCategoriesObjs,
   subscriptionTypes,
@@ -91,14 +90,18 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
       subscriptionSchema.parse(parsedFormData);
       if (subscriptionToUpdate) {
         // Editing existing subscription
-        updateSubscription({ ...parsedFormData, id: subscriptionToUpdate.id });
+        updateSubscription({
+          ...parsedFormData,
+          active: subscriptionToUpdate.active,
+          id: subscriptionToUpdate.id,
+        });
 
         console.log('Editing existing subscription:', parsedFormData);
         // Make API call to update the existing subscription
         // Use subscriptionToUpdate.id to identify the subscription
         // updateSubscription(subscriptionToUpdate.id, parsedFormData);
       } else {
-        saveSubscription(parsedFormData);
+        saveSubscription({ ...parsedFormData, active: true });
         console.log('Saving new data:', parsedFormData);
       }
       resetInputs();
@@ -317,31 +320,23 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
                       />
                     </FormControl>
                   </HStack>
-                  <HStack>
-                    <button type="submit">
-                      <Icon
-                        as={FontAwesomeIcon}
-                        icon={faCheckCircle}
-                        boxSize={12}
-                        color={'green.500'}
-                        _hover={{
-                          color: 'green.300',
-                          cursor: 'pointer', // Add this line to show that the icon is clickable
-                        }}
-                      />
-                    </button>
-                    <Icon
-                      as={FontAwesomeIcon}
-                      icon={faXmarkCircle}
-                      boxSize={12}
-                      color={'red.500'}
+                  <HStack
+                    width={'100%'}
+                    justifyContent={'center'}
+                    mt={5}
+                    mb={5}
+                    gap={5}
+                  >
+                    <Button type="submit" colorScheme="green">
+                      <Text>Create</Text>
+                    </Button>
+                    <Button
+                      type="submit"
+                      colorScheme="red"
                       onClick={onClickHandle}
-                      className="XmarkCircle"
-                      _hover={{
-                        color: 'red.300',
-                        cursor: 'pointer', // Add this line to show that the icon is clickable
-                      }}
-                    />
+                    >
+                      <Text>Discard</Text>
+                    </Button>
                   </HStack>
                 </VStack>
               </CardBody>

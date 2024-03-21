@@ -338,7 +338,7 @@ const Report = () => {
         </Card>
       </GridItem>
 
-      <GridItem area="filter" bg="dodgerblue">
+      <GridItem area="filter">
         <Card>
           <CardHeader>
             <Heading fontSize={28} mb={-5}>

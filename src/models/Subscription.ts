@@ -20,6 +20,7 @@ export interface Subscription {
   type: SubscriptionTypeEnum;
   price: number;
   category: SubscriptionCategory;
+  active: boolean;
 }
 
 export type SubscriptionType = z.infer<typeof subscriptionSchema>;

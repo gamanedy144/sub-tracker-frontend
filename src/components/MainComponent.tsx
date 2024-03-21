@@ -35,7 +35,14 @@ const MainComponent: React.FC<MainComponentProps> = () => {
     >
       <Toaster position="top-right" />
       <GridItem area="aside" height="100%" overflowY="auto">
-        <Card height={'100%'} bg={colorMode === 'dark' ? 'gray' : 'lightgray'}>
+        <Card
+          height={'100%'}
+          bg={
+            colorMode === 'dark'
+              ? 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(46,55,72,1) 78%, rgba(46,55,72,1) 100%);'
+              : 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(234,240,255,1) 63%, rgba(188,211,255,1) 100%);'
+          }
+        >
           <SideBar
             shouldShowSidebar={shouldShowSidebar!}
             onToggleSidebar={handleToggleSidebar}
@@ -44,7 +51,14 @@ const MainComponent: React.FC<MainComponentProps> = () => {
       </GridItem>
 
       <GridItem area="main" overflowY="auto">
-        <Card height={'100%'} bg={colorMode === 'dark' ? 'gray' : 'lightgray'}>
+        <Card
+          height={'100%'}
+          bg={
+            colorMode === 'dark'
+              ? 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(29,35,46,1) 78%, rgba(22,23,33,1) 100%);'
+              : 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(234,240,255,1) 63%, rgba(188,211,255,1) 100%);'
+          }
+        >
           <MainContent routeTitle={routeTitle} />
         </Card>
       </GridItem>
