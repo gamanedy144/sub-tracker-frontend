@@ -95,11 +95,6 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
           active: subscriptionToUpdate.active,
           id: subscriptionToUpdate.id,
         });
-
-        console.log('Editing existing subscription:', parsedFormData);
-        // Make API call to update the existing subscription
-        // Use subscriptionToUpdate.id to identify the subscription
-        // updateSubscription(subscriptionToUpdate.id, parsedFormData);
       } else {
         saveSubscription({ ...parsedFormData, active: true });
         console.log('Saving new data:', parsedFormData);
@@ -327,13 +322,20 @@ const UpdateSubCard: FC<UpdateSubCardProps> = ({
                     mb={5}
                     gap={5}
                   >
-                    <Button type="submit" colorScheme="green">
-                      <Text>Create</Text>
+                    <Button
+                      type="submit"
+                      colorScheme={subscriptionToUpdate ? 'blue' : 'green'}
+                    >
+                      <Text>{subscriptionToUpdate ? 'Edit' : 'Create'}</Text>
                     </Button>
                     <Button
                       type="submit"
                       colorScheme="red"
-                      onClick={onClickHandle}
+                      onClick={() => {
+                        onClickHandle();
+                        resetInputs();
+                        this!.subscriptionToUpdate = null;
+                      }}
                     >
                       <Text>Discard</Text>
                     </Button>

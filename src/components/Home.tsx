@@ -25,6 +25,7 @@ const Home = () => {
 
   const onClickHandle = () => {
     setIsAdding(!isAdding);
+    setSubscriptionToEdit(null);
     setSubscription(null);
   };
 
