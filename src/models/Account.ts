@@ -18,6 +18,7 @@ export interface RegisterRequest {
   confirmPassword: string;
   firstName: string;
   lastName: string;
+  username: string;
 }
 export interface UpdateRequest {
   appUsername: string;
