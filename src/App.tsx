@@ -1,19 +1,7 @@
-import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
-import SideBar from './components/SideBar';
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
-import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Authentication from './components/Authentication';
 import MainComponent from './components/MainComponent';
-import RequireAuth from 'react-auth-kit';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
-import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <>

@@ -16,11 +16,7 @@ import {
 } from '@chakra-ui/react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCheckCircle,
-  faPlusCircle,
-  faXmarkCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FC, FormEvent, useEffect, useState } from 'react';
 import useSubscriptionProviders from '../hooks/useSubscriptionProviders';
 import {
@@ -40,7 +36,7 @@ import { useLocation } from 'react-router-dom';
 interface UpdateSubCardProps {
   clicked: boolean;
   onClickHandle: () => void;
-  subscriptionToUpdate?: Subscription;
+  subscriptionToUpdate?: Subscription | null;
 }
 const UpdateSubCard: FC<UpdateSubCardProps> = ({
   clicked,

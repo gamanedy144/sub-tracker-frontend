@@ -20,8 +20,9 @@ const Home = () => {
   const { sortedData: subscriptions } = useSubscriptions();
 
   const [isAdding, setIsAdding] = useState(false);
-  const [subscription, setSubscription] = useState();
-  const [subscriptionToEdit, setSubscriptionToEdit] = useState();
+  const [subscription, setSubscription] = useState<Subscription | null>();
+  const [subscriptionToEdit, setSubscriptionToEdit] =
+    useState<Subscription | null>();
 
   const onClickHandle = () => {
     setIsAdding(!isAdding);

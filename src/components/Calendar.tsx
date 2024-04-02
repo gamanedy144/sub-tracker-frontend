@@ -13,18 +13,31 @@ import useSubscriptions from '../hooks/useSubscriptions';
 import { useState } from 'react';
 import SubscriptionDetails from './SubscriptionDetails';
 import { Subscription } from '../models/Subscription';
-import { addDays, format } from 'date-fns';
-import { calendarColors, typeColors } from '../resources/theme';
+import { addDays } from 'date-fns';
+import { calendarColors } from '../resources/theme';
 import useTransactions from '../hooks/useTransactions';
 import UpdateSubCard from './UpdateSubCard';
 import { Transaction } from '../models/Transaction';
+import { SubscriptionTypeEnum } from '../utils/subscriptionEnums';
+interface Event {
+  title: string;
+  start: Date;
+  allDay: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  color: any;
+  transaction?: Transaction;
+  subscriptionType: SubscriptionTypeEnum;
+  subscription: Subscription;
+}
 const Calendar = () => {
   const { sortedData: subscriptions } = useSubscriptions();
   const { sortedData: transactions } = useTransactions();
 
   const [isAdding, setIsAdding] = useState(false);
-  const [subscriptionToEdit, setSubscriptionToEdit] = useState();
-  const [selectedSubscription, setSelectedSubscription] = useState();
+  const [subscriptionToEdit, setSubscriptionToEdit] =
+    useState<Subscription | null>();
+  const [selectedSubscription, setSelectedSubscription] =
+    useState<Subscription | null>();
 
   const handleClickEdit = (subscription: Subscription) => {
     setIsAdding(true);
@@ -46,7 +59,7 @@ const Calendar = () => {
       const today = new Date();
       const remainingDays = Math.max(
         0,
-        Math.ceil((endDate - today) / (24 * 60 * 60 * 1000))
+        Math.ceil((endDate.valueOf() - today.valueOf()) / (24 * 60 * 60 * 1000))
       );
       return Math.min(remainingDays, 365); // Limit to the remaining days or until the end of the year
     }
@@ -55,7 +68,7 @@ const Calendar = () => {
   };
 
   const generateEvents = (subscription: Subscription) => {
-    const events = [];
+    const events: Event[] = [];
     const endDate = subscription.endDate
       ? new Date(subscription.endDate)
       : null;
@@ -75,7 +88,7 @@ const Calendar = () => {
         (eventType === 'monthly' && i % 30 === 0) ||
         (eventType === 'yearly' && i % 365 === 0)
       ) {
-        const event = {
+        const event: Event = {
           title: subscription.subscriptionName,
           start: eventDate,
           allDay: true,
@@ -91,16 +104,16 @@ const Calendar = () => {
     return events;
   };
   const generateEventsFromTransactions = (transactions: Transaction[]) => {
-    const events = [];
+    const events: Event[] = [];
 
     transactions.forEach((transaction) => {
       const color =
         calendarColors[transaction.subscription.type.toLowerCase()] || 'gray';
-      const event = {
+      const event: Event = {
         title: transaction.subscription.subscriptionName,
         start: new Date(transaction.timestamp),
         allDay: true,
-        color, // You can set a default color
+        color,
         transaction: transaction,
         subscription: transaction.subscription,
         subscriptionType: transaction.subscription.type,
@@ -112,17 +125,19 @@ const Calendar = () => {
     return events;
   };
 
-  const transactionEvents = generateEventsFromTransactions(transactions);
+  const transactionEvents = transactions
+    ? generateEventsFromTransactions(transactions)
+    : null;
 
   const events = subscriptions
-    ? subscriptions.reduce(
-        (allEvents, subscription) =>
-          allEvents.concat(generateEvents(subscription)),
-        []
-      )
+    ? subscriptions.reduce((allEvents: Event[], subscription) => {
+        return (allEvents = [...allEvents, ...generateEvents(subscription)]);
+      }, [])
     : [];
 
-  const allEvents = [...events, ...transactionEvents];
+  const allEvents = transactionEvents
+    ? [...events, ...transactionEvents]
+    : [...events];
 
   return (
     <Grid

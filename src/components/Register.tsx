@@ -31,7 +31,7 @@ const Register = () => {
     confirmPassword: '',
     lastName: '',
     firstName: '',
-    username: '',
+    appUsername: '',
   });
   const [formData, setFormData] = useState({ ...initialFormData });
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +49,7 @@ const Register = () => {
     try {
       event.preventDefault();
       registerSchema.parse(formData);
-      await register(formData);
+      await register({ ...formData, username: formData.appUsername });
       toast.success('Registration successful!');
       navigate('/auth/login');
     } catch (error) {
@@ -64,7 +64,7 @@ const Register = () => {
       confirmPassword: '',
       lastName: '',
       firstName: '',
-      username: '',
+      appUsername: '',
     });
   };
 
@@ -135,11 +135,11 @@ const Register = () => {
                   <FormLabel>Username</FormLabel>
                   <Input
                     type="text"
-                    value={formData.username}
+                    value={formData.appUsername}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        username: e.target.value,
+                        appUsername: e.target.value,
                       })
                     }
                   />

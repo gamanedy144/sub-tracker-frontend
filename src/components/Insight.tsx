@@ -34,14 +34,14 @@ const Insight = () => {
     // Add more data as needed
   };
 
-  const [currYearSpendings, setCurrYearSpendings] = useState(null);
+  const [currYearSpendings, setCurrYearSpendings] = useState<number | null>(0);
 
   const { data: currentYearSpendings } = useFetchEstimatedCurrentYear();
   const prevCurrYearSpendings = useRef(currYearSpendings);
   console.log(currentYearSpendings);
   useEffect(() => {
     if (prevCurrYearSpendings.current !== currYearSpendings) {
-      setCurrYearSpendings((prevUserData) => {
+      setCurrYearSpendings(() => {
         return currentYearSpendings;
       });
 
@@ -92,7 +92,9 @@ const Insight = () => {
           </CardHeader>
           <CardBody fontSize={24}>
             {typeof currentYearSpendings === 'number' && (
-              <>£{currentYearSpendings.toFixed(2)}</>
+              <>
+                £{currentYearSpendings ? currentYearSpendings.toFixed(2) : 0.0}
+              </>
             )}
           </CardBody>
         </Card>
